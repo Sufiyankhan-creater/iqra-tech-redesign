@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iqra Tech | Futuristic Quranic Linguistics</title>
+    <meta name="description" content="Unlock the profound linguistic beauty of the Quran with Iqra Tech's interactive dictionary and academy.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">IQRA<span>TECH</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="academy.html">Academy</a></li>
+                <li><a href="quran.html">Quran</a></li>
+                <li><a href="dictionary.html">Dictionary</a></li>
+            </ul>
+            <a href="dictionary.html" class="btn btn-teal" style="padding: 0.6rem 1.5rem; font-size: 0.7rem;">Download PDF</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="container hero-layout">
+            <div class="hero-left">
+                <div class="subtitle-badge">Linguistic Excellence</div>
+                <h1>Dive into the <br><span>Quranic Ocean</span></h1>
+                <p>Unlock the profound linguistic beauty of the Quran with our curated trilingual dictionary and interactive academy. Master the language of the final revelation with precision.</p>
+                <div class="cta-group">
+                    <a href="academy.html" class="btn btn-primary">Begin Academy</a>
+                    <a href="quran.html" class="btn btn-secondary">Explore Quran</a>
+                </div>
+                
+                <div class="hero-stats-mini">
+                    <div class="mini-stat">
+                        <span class="num">77k+</span>
+                        <span class="label">Tokens</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="num">100%</span>
+                        <span class="label">Interactive</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="num">3</span>
+                        <span class="label">Languages</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="wotd-card-new float-element">
+                    <div class="wotd-card-header">Word of the Day</div>
+                    <div class="wotd-card-arabic" id="hero-arabic">سَلَام</div>
+                    <div class="wotd-card-meaning" id="hero-meaning">
+                        <span class="urdu-text">سلام</span>
+                        <div class="vert-divider"></div>
+                        <span class="eng-text">Peace</span>
+                    </div>
+                    <div class="wotd-card-context">
+                        "And the servants of the Most Merciful... say, Peace" (25:63)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Stats Section -->
+    <section class="stats-section reveal">
+        <div class="container stats-grid">
+            <div class="stat-item">
+                <h3 class="stat-number" data-target="77430">77,430+</h3>
+                <p class="stat-desc">Words Analyzed in Depth</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="stat-number" data-target="114">114</h3>
+                <p class="stat-desc">Surahs Fully Mapped</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="stat-number" data-target="50">50+</h3>
+                <p class="stat-desc">Core Grammar Rules</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="stat-number" data-target="10000">10,000+</h3>
+                <p class="stat-desc">Active Students</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section class="methodology-section reveal">
+        <div class="container text-center">
+            <div class="subtitle-badge">Our System</div>
+            <h2 class="section-title">The <span>Iqra Approach</span></h2>
+            <div class="bento-grid">
+                <div class="bento-item glass-card large">
+                    <i class="fas fa-microscope feature-icon"></i>
+                    <h3>Morphological Precision</h3>
+                    <p>Every word is broken down to its root (Masdar), identifying every weight (Wazan) and transformation (Sarf) with surgical accuracy.</p>
+                </div>
+                <div class="bento-item glass-card">
+                    <i class="fas fa-layer-group feature-icon"></i>
+                    <h3>Layered Translation</h3>
+                    <p>Moving beyond simple meaning. We provide Word-to-Word, Idiomatic, and Contextual translations in Urdu & English.</p>
+                </div>
+                <div class="bento-item glass-card">
+                    <i class="fas fa-brain feature-icon"></i>
+                    <h3>Pattern Recognition</h3>
+                    <p>Our Academy focuses on core patterns, enabling you to recognize grammar rules across any Ayat instantly.</p>
+                </div>
+                <div class="bento-item glass-card wide">
+                    <i class="fas fa-infinity feature-icon"></i>
+                    <h3>Dynamic Learning</h3>
+                    <p>Interactive exercises and visual feedback loops ensure that knowledge is retained, not just memorized.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roots Section -->
+    <section class="roots-section reveal">
+        <div class="container roots-container">
+            <div class="roots-content">
+                <div class="subtitle-badge">Deep Analytics</div>
+                <h2 class="section-title" style="text-align: left;">Infinite <span>Root Connections</span></h2>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Discover how a single 3-letter root blooms into hundreds of distinct meanings across the Quranic text.</p>
+                <ul class="root-list">
+                    <li><i class="fas fa-check-circle"></i> Semantic Field Exploration</li>
+                    <li><i class="fas fa-check-circle"></i> Trilateral Root Mapping</li>
+                    <li><i class="fas fa-check-circle"></i> Derivative Word Analysis</li>
+                </ul>
+                <a href="academy.html" class="btn btn-secondary">Explore Root Maps</a>
+            </div>
+            <div class="roots-visual">
+                <div class="root-node glass-card float-element">
+                    <div class="root-core">ع ل م</div>
+                    <div class="root-branches">
+                        <span class="branch">عَالِم</span>
+                        <span class="branch">عَلِيم</span>
+                        <span class="branch">عَلَّمَ</span>
+                        <span class="branch">تَعْلِيم</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Journey Section -->
+    <section class="journey-section reveal" style="padding: 100px 0;">
+        <div class="container text-center">
+            <div class="subtitle-badge">Your Path</div>
+            <h2 class="section-title">The Quest for <span>Linguistic Mastery</span></h2>
+            
+            <div class="grid" style="margin-top: 4rem;">
+                <div class="glass-card" style="padding: 3rem;">
+                    <div style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 1.5rem;">01</div>
+                    <h4 style="font-size: 1.4rem; color: #fff; margin-bottom: 1rem;">The Token Phase</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Start by mastering the fundamental Building Blocks (Huruf-e-Jar and Pronouns) using our interactive discovery engine.</p>
+                </div>
+                <div class="glass-card" style="padding: 3rem;">
+                    <div style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 1.5rem;">02</div>
+                    <h4 style="font-size: 1.4rem; color: #fff; margin-bottom: 1rem;">Action & Reality</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Understand the flow of time through Past and Universal tenses, unlocking the core narrative structure of the Quran.</p>
+                </div>
+                <div class="glass-card" style="padding: 3rem;">
+                    <div style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 1.5rem;">03</div>
+                    <h4 style="font-size: 1.4rem; color: #fff; margin-bottom: 1rem;">Deep Integration</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Map complex trilateral roots and observe their semantic evolution across all 114 Surahs in our Explorer.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community CTA Section -->
+    <section class="cta-section reveal" style="padding: 120px 0; background: radial-gradient(circle at 10% 10%, rgba(0, 168, 132, 0.05) 0%, transparent 40%);">
+        <div class="container text-center" style="max-width: 800px;">
+            <div class="subtitle-badge">Begin Now</div>
+            <h2 style="font-size: 3.5rem; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 1.5rem;">Ready to Decode the <br><span>Sacred Language?</span></h2>
+            <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem;">Join 10,000+ students on their journey toward linguistic enlightenment and spiritual depth.</p>
+            <div style="display: flex; justify-content: center; gap: 1.5rem;">
+                <a href="academy.html" class="btn btn-primary" style="padding: 1.2rem 3rem;">Enter Academy</a>
+                <a href="dictionary.html" class="btn btn-teal" style="padding: 1.2rem 3rem;">Download Dictionary</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <a href="index.html" class="logo">IQRA<span>TECH</span></a>
+                    <p>Empowering humanity through the linguistic beauty of the Quran. Join us in our journey towards digital enlightenment.</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2026 Iqra Tech Project. All systems operational. <span>// Antigravity v2.0</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

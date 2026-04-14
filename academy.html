@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academy | Iqra Tech</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background Particles -->
+    <div id="particles-js"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">IQRA<span>TECH</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="academy.html" class="active">Academy</a></li>
+                <li><a href="quran.html">Quran</a></li>
+                <li><a href="dictionary.html">Dictionary</a></li>
+            </ul>
+            <a href="dictionary.html" class="btn btn-teal" style="padding: 0.6rem 1.5rem; font-size: 0.7rem;">Download PDF</a>
+        </div>
+    </nav>
+
+    <!-- Academy Hero Header -->
+    <section class="page-header" style="padding-top: 40px; text-align: center; background: radial-gradient(circle at 50% -20%, rgba(240, 189, 90, 0.05), transparent 70%);">
+        <div class="container">
+            <div class="subtitle-badge" style="margin-bottom: 1rem;">Interactive Learning</div>
+            <h1 style="font-size: 3.5rem; margin-bottom: 0.5rem; color: #fff; text-transform: uppercase; letter-spacing: -1px;">Arabic & Urdu <span>Grammar Academy</span></h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 800px; margin: 0 auto 1.5rem;">Master Quranic linguistics with our professional, interactive step-by-step lessons.</p>
+        </div>
+    </section>
+
+    <!-- Academy Dashboard Bar -->
+    <div class="academy-dashboard-bar reveal" style="margin-top: 0; margin-bottom: 1rem;">
+        <div class="dashboard-card" style="padding: 1.5rem 2.5rem;">
+            <i class="fas fa-layer-group" style="font-size: 1.8rem;"></i>
+            <div>
+                <span class="label" style="font-size: 0.8rem;">Current Phase</span>
+                <span class="value" style="font-size: 1.3rem;">01: Foundations</span>
+            </div>
+        </div>
+        <div class="dashboard-card" style="padding: 1.5rem 2.5rem;">
+            <i class="fas fa-microchip" style="font-size: 1.8rem;"></i>
+            <div>
+                <span class="label" style="font-size: 0.8rem;">System Status</span>
+                <span class="value" style="font-size: 1.3rem;">Linguistic AI Active</span>
+            </div>
+        </div>
+        <div class="dashboard-card" style="padding: 1.5rem 2.5rem;">
+            <i class="fas fa-database" style="font-size: 1.8rem;"></i>
+            <div>
+                <span class="label" style="font-size: 0.8rem;">Data Feed</span>
+                <span class="value" style="font-size: 1.3rem;">Al-Quran Cloud Ver.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub Navigation -->
+    <section class="academy-tabs" style="margin-bottom: 1rem;">
+        <div class="container">
+            <ul class="sub-nav-links" style="gap: 1.5rem;">
+                <li><a href="#" class="academy-tab active" data-category="huruf-e-jar">Hurfe-jar</a></li>
+                <li><a href="#" class="academy-tab" data-category="attached-pronouns">Attached Pronouns</a></li>
+                <li><a href="#" class="academy-tab" data-category="detached-pronouns">Detached Pronouns</a></li>
+                <li><a href="#" class="academy-tab" data-category="past-tense">Past Tense</a></li>
+                <li><a href="#" class="academy-tab" data-category="universal-tense">Universal Tense</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Content Area: Huruf-e-Jar (Default active) -->
+    <section class="academy-content">
+        <div class="container">
+            <div class="content-header" style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; margin-bottom: 2rem;">
+                <div>
+                    <div class="step-badge" id="academy-step-badge" style="font-size: 0.7rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem;"><i class="fas fa-bolt"></i> STEP 1: DISCOVER</div>
+                    <h2 id="academy-title" style="font-size: 2rem; color: var(--accent-gold);">Huruf-e-Jar</h2>
+                    <p id="academy-desc" style="color: var(--text-muted); font-size: 0.9rem;">Connecting particles in Arabic grammar.</p>
+                </div>
+                <div class="word-count" id="academy-word-count" style="font-size: 0.9rem; color: var(--accent-gold);">0 Tokens</div>
+            </div>
+
+            <!-- Rule Box -->
+            <div id="academy-rule-box">
+                <h4><i class="fas fa-info-circle"></i> CATEGORY RULE</h4>
+                <p id="academy-rule-text">Loading rules...</p>
+            </div>
+
+            <!-- STEP 1: Words Grid -->
+            <div class="academy-word-grid" id="academy-dynamic-grid">
+                <!-- dynamic content rendered via JS -->
+            </div>
+
+            <!-- STEP 2: Examples Grid (Hidden initially) -->
+            <div id="academy-examples-grid" style="display: none;">
+                <!-- dynamic content rendered via JS -->
+            </div>
+
+            <!-- STEP 3: Exercises / Quiz (Hidden initially) -->
+            <div id="academy-quiz-container" style="display: none; max-width: 800px; margin: 0 auto;">
+                <div class="glass-card quiz-card" style="padding: 3rem; text-align: center;">
+                    <div id="quiz-question-container">
+                        <h3 id="quiz-question-text" style="font-size: 1.8rem; margin-bottom: 2rem; color: #fff;">Question Loading...</h3>
+                        <div id="quiz-options-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                            <!-- Options rendered via JS -->
+                        </div>
+                    </div>
+                    <div id="quiz-feedback-box" style="display: none; padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; font-weight: 600;">
+                        <!-- Feedback text -->
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 4rem; display: flex; justify-content: center; gap: 1.5rem;">
+                <button id="academy-prev-btn" class="btn btn-secondary" style="display: none; padding: 1rem 3rem;">Back to Words</button>
+                <button id="academy-next-btn" class="btn btn-primary" style="padding: 1rem 3rem;">Next: Examples</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright" style="margin-top: 0; padding-top: 20px;">
+                <p>© 2026 Iqra Tech Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="grammarData.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
