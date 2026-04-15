@@ -338,50 +338,51 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
     processTTS(text, iconEl);
 };
 
-// Dedicated Academy TTS — completely separate from speakArabic (Quran reader)
-// Uses setTimeout to fix Chrome's cancel→speak race condition
+// Dedicated Academy TTS — called directly from user click (gesture-safe)
 window.speakAcademyArabic = function(text, btnEl) {
-    // Cancel any running audio first
+    // Stop any HTML audio playing
     if (audioSettings.currentAudio) {
         audioSettings.currentAudio.pause();
-        audioSettings.currentAudio.currentTime = 0;
         audioSettings.currentAudio = null;
     }
 
-    // Animate the button
+    // Animate button immediately (sync — safe)
     _animateVoiceIcon(btnEl);
 
     if (!('speechSynthesis' in window)) {
-        // No Web Speech API — remove animation and stop
         if (btnEl) btnEl.classList.remove('voice-playing');
         return;
     }
 
-    // Cancel any ongoing speech
+    // IMPORTANT: cancel() + speak() must both be SYNCHRONOUS within the
+    // user click handler. Never use setTimeout here — it breaks Chrome's
+    // user-gesture requirement for audio playback.
     window.speechSynthesis.cancel();
 
-    // Chrome requires a brief pause after cancel() before speak() works
-    setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ar-SA';
-        utterance.rate = 0.8;
-        utterance.pitch = 1;
-        utterance.volume = 1;
+    // Chrome sometimes gets stuck in paused state — resume() fixes it
+    if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+    }
 
-        // Assign a specific Arabic voice if available
-        if (!_arabicVoice) _loadArabicVoice();
-        if (_arabicVoice) utterance.voice = _arabicVoice;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ar-SA';
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+    utterance.volume = 1;
 
-        utterance.onend = () => {
-            if (btnEl) btnEl.classList.remove('voice-playing');
-        };
-        utterance.onerror = (ev) => {
-            console.warn('Academy TTS error:', ev.error, '| Text:', text);
-            if (btnEl) btnEl.classList.remove('voice-playing');
-        };
+    // Use a specific Arabic voice if available; browser uses built-in otherwise
+    if (!_arabicVoice) _loadArabicVoice();
+    if (_arabicVoice) utterance.voice = _arabicVoice;
 
-        window.speechSynthesis.speak(utterance);
-    }, 150);
+    utterance.onend = () => {
+        if (btnEl) btnEl.classList.remove('voice-playing');
+    };
+    utterance.onerror = (ev) => {
+        console.warn('Academy TTS error:', ev.error, '| text:', text);
+        if (btnEl) btnEl.classList.remove('voice-playing');
+    };
+
+    window.speechSynthesis.speak(utterance);
 };
 
 function shuffleArray(array) {
