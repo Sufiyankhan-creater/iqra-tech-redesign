@@ -152,7 +152,12 @@ function renderAcademy() {
         document.getElementById('academy-prev-btn').style.display = 'none';
         grid.innerHTML = data.words.map(w => `
             <div class="word-card glass-card">
-                <div class="word-arabic" onclick="speakArabic(\`${w.arabic.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, null)">${w.arabic} <i class="fas fa-volume-up audio-hint"></i></div>
+                <div class="word-arabic">${w.arabic}</div>
+                <button class="academy-voice-btn" title="Play Arabic audio"
+                    onclick="speakArabic(\`${w.arabic.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, null, this)">
+                    <i class="fas fa-volume-up"></i>
+                    <span>Play</span>
+                </button>
                 <div class="word-translations">
                     <div class="trans-item"><span class="label">URDU</span><span class="urdu-text">${w.urdu}</span></div>
                     <div class="trans-item"><span class="label">ENG</span><span class="eng-text">${w.english}</span></div>
@@ -164,7 +169,12 @@ function renderAcademy() {
         document.getElementById('academy-prev-btn').style.display = 'inline-block';
         examplesGrid.innerHTML = data.examples.map(ex => `
             <div class="academy-example-card">
-                <div class="example-arabic" onclick="speakArabic(\`${ex.arabic.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, null)">${ex.arabic} <i class="fas fa-volume-up audio-hint"></i></div>
+                <div class="example-arabic">${ex.arabic}</div>
+                <button class="academy-voice-btn" title="Play Arabic audio"
+                    onclick="speakArabic(\`${ex.arabic.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, null, this)">
+                    <i class="fas fa-volume-up"></i>
+                    <span>Play</span>
+                </button>
                 <div class="example-translations">
                     <div class="example-trans-item"><div class="lang-label">URDU</div><div class="trans-text urdu-font">${ex.urdu}</div></div>
                     <div class="example-trans-item"><div class="lang-label">ENG</div><div class="trans-text">${ex.english}</div></div>
@@ -255,63 +265,94 @@ window.checkQuizAnswer = function(selected) {
 }
 
 // ─── Arabic Voice Engine ───────────────────────────────────────────────────
-window.speakArabic = function(text, ayahNumber) {
-    // Stop current audio if playing
+
+// Pre-load Arabic voices as soon as the browser is ready
+let _arabicVoice = null;
+function _loadArabicVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    const female = voices.find(v => v.lang.startsWith('ar') &&
+        (v.name.toLowerCase().includes('female') ||
+         v.name.toLowerCase().includes('laila') ||
+         v.name.toLowerCase().includes('amira')));
+    _arabicVoice = female || voices.find(v => v.lang.startsWith('ar')) || null;
+}
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = _loadArabicVoice;
+    _loadArabicVoice(); // also try immediately
+}
+
+// Animate a voice icon: pulse while speaking
+function _animateVoiceIcon(iconEl) {
+    if (!iconEl) return;
+    iconEl.classList.remove('voice-playing');
+    // Force reflow so the animation restarts on repeated clicks
+    void iconEl.offsetWidth;
+    iconEl.classList.add('voice-playing');
+}
+
+// Main speak function — unchanged signature so Quran section is unaffected
+window.speakArabic = function(text, ayahNumber, iconEl) {
+    // Stop any current audio
     if (audioSettings.currentAudio) {
         audioSettings.currentAudio.pause();
         audioSettings.currentAudio = null;
     }
 
-    // 1. Professional Recitation Mode (Alafasy Default)
+    // Animate the clicked icon (Academy only; Quran passes no iconEl)
+    _animateVoiceIcon(iconEl || null);
+
+    // 1. Professional Recitation Mode — Quran numbered ayahs via Alafasy MP3
     if (ayahNumber) {
         console.log(`Streaming Taraweeh Style: Alafasy | Ayah: ${ayahNumber}`);
         const url = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayahNumber}.mp3`;
-        
         audioSettings.currentAudio = new Audio(url);
         audioSettings.currentAudio.play().catch(err => {
             console.error("Audio playback error, falling back to TTS:", err);
-            processTTS(text);
+            processTTS(text, iconEl);
         });
         return;
     }
 
-    // 2. TTS Mode (Academy Fallback)
-    processTTS(text);
+    // 2. TTS Mode — used by Academy
+    processTTS(text, iconEl);
 };
 
-function processTTS(text) {
-    // Clean the text
+function processTTS(text, iconEl) {
     const cleanText = text.replace(/[^\u0600-\u06FF\s0-9.,?!]/g, '').trim();
     if (!cleanText) return;
 
-    // Use Local TTS if female voice exists or if it's the only option
     if ('speechSynthesis' in window) {
+        // Always cancel first so repeat-clicks replay from start
         window.speechSynthesis.cancel();
-        const voices = window.speechSynthesis.getVoices();
-        
-        // Try to find a female voice if requested
-        let preferredVoice = voices.find(v => v.lang.startsWith('ar') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('laila') || v.name.toLowerCase().includes('amira')));
-        
-        // Fallback to any Arabic voice
-        if (!preferredVoice) preferredVoice = voices.find(v => v.lang.startsWith('ar'));
 
-        if (preferredVoice) {
-            const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.lang = 'ar-SA';
-            utterance.voice = preferredVoice;
-            utterance.rate = 0.85;
-            window.speechSynthesis.speak(utterance);
-            return;
-        }
+        // Refresh voice list in case it loaded late
+        if (!_arabicVoice) _loadArabicVoice();
+
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.85;
+        if (_arabicVoice) utterance.voice = _arabicVoice;
+
+        utterance.onend = () => {
+            if (iconEl) iconEl.classList.remove('voice-playing');
+        };
+        utterance.onerror = () => {
+            if (iconEl) iconEl.classList.remove('voice-playing');
+        };
+
+        window.speechSynthesis.speak(utterance);
+        return;
     }
 
-    // Cloud Fallback (Neural Style)
+    // Cloud Fallback (no native TTS support)
     const encodedText = encodeURIComponent(cleanText);
     const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=ar&client=tw-ob`;
-    
     const audio = new Audio(ttsUrl);
     audioSettings.currentAudio = audio;
     audio.play();
+    if (iconEl) {
+        audio.onended = () => iconEl.classList.remove('voice-playing');
+    }
 }
 
 function shuffleArray(array) {
