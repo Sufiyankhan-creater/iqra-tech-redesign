@@ -337,8 +337,9 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
     processTTS(text, iconEl);
 };
 
-// Academy TTS — direct closure approach, no attribute parsing
+// Academy TTS — direct closure, with console logging and Google TTS fallback
 window.speakAcademyArabic = function(text, btnEl) {
+    console.log('[Iqra TTS] Play clicked. Text:', text);
     if (audioSettings.currentAudio) {
         audioSettings.currentAudio.pause();
         audioSettings.currentAudio = null;
@@ -346,27 +347,43 @@ window.speakAcademyArabic = function(text, btnEl) {
     _animateVoiceIcon(btnEl);
     const done = () => { if (btnEl) btnEl.classList.remove('voice-playing'); };
 
-    // PRIMARY: ResponsiveVoice — cloud Arabic TTS, works without installed voice packs
-    if (typeof responsiveVoice !== 'undefined') {
-        responsiveVoice.cancel();
-        responsiveVoice.speak(text, 'Arabic Male', { rate: 0.9, onend: done, onerror: done });
-        return;
-    }
-
-    // FALLBACK: Web Speech API
+    // Method 1: Web Speech API (works if device has Arabic voice)
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        if (window.speechSynthesis.paused) window.speechSynthesis.resume();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'ar-SA';
         utterance.rate = 0.8;
-        utterance.onend = done;
-        utterance.onerror = () => done();
+        utterance.onstart = () => console.log('[Iqra TTS] Web Speech started ✓');
+        utterance.onend   = () => { console.log('[Iqra TTS] Web Speech done ✓'); done(); };
+        utterance.onerror = (e) => {
+            console.warn('[Iqra TTS] Web Speech error:', e.error, '→ Google TTS');
+            _playGoogleTTS(text, done);
+        };
         window.speechSynthesis.speak(utterance);
+        // Detect silent failure (no Arabic voice installed) after 600ms
+        setTimeout(() => {
+            if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) {
+                console.warn('[Iqra TTS] Web Speech silent — trying Google TTS');
+                _playGoogleTTS(text, done);
+            }
+        }, 600);
         return;
     }
-    done();
+    // Method 2: Google Translate TTS audio
+    _playGoogleTTS(text, done);
 };
+
+function _playGoogleTTS(text, done) {
+    const url = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar&q='
+              + encodeURIComponent(text);
+    console.log('[Iqra TTS] Google TTS URL:', url);
+    const audio = new Audio(url);
+    audioSettings.currentAudio = audio;
+    audio.onended = () => { console.log('[Iqra TTS] Google TTS done ✓'); if(done) done(); };
+    audio.onerror = (e) => { console.warn('[Iqra TTS] Google TTS error:', e); if(done) done(); };
+    audio.play().catch(e => { console.warn('[Iqra TTS] play() rejected:', e); if(done) done(); });
+}
+
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
