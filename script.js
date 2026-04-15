@@ -99,6 +99,18 @@ function initAcademy() {
 
     renderAcademy();
 
+    // ── Delegated voice button handler ──────────────────────────────────────
+    // Using data-arabic avoids ALL escaping issues with Arabic diacritics in
+    // inline onclick attributes. We read the text safely from the DOM here.
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.academy-voice-btn');
+        if (!btn) return;
+        const arabicText = btn.getAttribute('data-arabic');
+        if (arabicText) {
+            speakArabic(arabicText, null, btn);
+        }
+    });
+
     document.getElementById('academy-next-btn')?.addEventListener('click', () => {
         if (academyState.step === 1) { 
             academyState.step = 2; renderAcademy(); window.scrollTo({ top: 300, behavior: 'smooth' }); 
@@ -150,11 +162,13 @@ function renderAcademy() {
         grid.style.display = 'grid'; examplesGrid.style.display = 'none'; quizContainer.style.display = 'none';
         document.getElementById('academy-next-btn').textContent = 'Next: Examples';
         document.getElementById('academy-prev-btn').style.display = 'none';
-        grid.innerHTML = data.words.map(w => `
+        grid.innerHTML = data.words.map(w => {
+            // Encode Arabic text into a data attribute — safe from escaping issues
+            const safeArabic = w.arabic.replace(/"/g, '&quot;');
+            return `
             <div class="word-card glass-card">
                 <div class="word-arabic">${w.arabic}</div>
-                <button class="academy-voice-btn" title="Play Arabic audio"
-                    onclick="speakArabic(\`${w.arabic.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, null, this)">
+                <button class="academy-voice-btn" data-arabic="${safeArabic}" title="Play Arabic audio">
                     <i class="fas fa-volume-up"></i>
                     <span>Play</span>
                 </button>
@@ -162,16 +176,18 @@ function renderAcademy() {
                     <div class="trans-item"><span class="label">URDU</span><span class="urdu-text">${w.urdu}</span></div>
                     <div class="trans-item"><span class="label">ENG</span><span class="eng-text">${w.english}</span></div>
                 </div>
-            </div>`).join('');
+            </div>`;
+        }).join('');
     } else if (academyState.step === 2) {
         grid.style.display = 'none'; examplesGrid.style.display = 'block'; quizContainer.style.display = 'none';
         document.getElementById('academy-next-btn').textContent = 'Next: Exercises';
         document.getElementById('academy-prev-btn').style.display = 'inline-block';
-        examplesGrid.innerHTML = data.examples.map(ex => `
+        examplesGrid.innerHTML = data.examples.map(ex => {
+            const safeArabic = ex.arabic.replace(/"/g, '&quot;');
+            return `
             <div class="academy-example-card">
                 <div class="example-arabic">${ex.arabic}</div>
-                <button class="academy-voice-btn" title="Play Arabic audio"
-                    onclick="speakArabic(\`${ex.arabic.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, null, this)">
+                <button class="academy-voice-btn" data-arabic="${safeArabic}" title="Play Arabic audio">
                     <i class="fas fa-volume-up"></i>
                     <span>Play</span>
                 </button>
@@ -179,7 +195,8 @@ function renderAcademy() {
                     <div class="example-trans-item"><div class="lang-label">URDU</div><div class="trans-text urdu-font">${ex.urdu}</div></div>
                     <div class="example-trans-item"><div class="lang-label">ENG</div><div class="trans-text">${ex.english}</div></div>
                 </div>
-            </div>`).join('');
+            </div>`;
+        }).join('');
     } else {
         grid.style.display = 'none'; examplesGrid.style.display = 'none'; quizContainer.style.display = 'block';
         const isLastQuest = academyState.quizIndex === data.exercises.length - 1;
@@ -318,25 +335,29 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
 };
 
 function processTTS(text, iconEl) {
-    const cleanText = text.replace(/[^\u0600-\u06FF\s0-9.,?!]/g, '').trim();
+    // Preserve Arabic letters + diacritics (harakat U+0610-U+061A, U+064B-U+065F)
+    // The full Arabic block U+0600-U+06FF covers all Quranic script
+    const cleanText = text.replace(/[^\u0600-\u06FF\s]/g, '').trim();
     if (!cleanText) return;
 
     if ('speechSynthesis' in window) {
-        // Always cancel first so repeat-clicks replay from start
+        // Always cancel first so repeat-clicks restart audio from beginning
         window.speechSynthesis.cancel();
-
-        // Refresh voice list in case it loaded late
-        if (!_arabicVoice) _loadArabicVoice();
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         utterance.lang = 'ar-SA';
-        utterance.rate = 0.85;
+        utterance.rate = 0.8;
+
+        // Use a specific Arabic voice if available, but ALWAYS speak even without one.
+        // Modern Chrome/Edge/Safari will use their built-in Arabic engine via lang alone.
+        if (!_arabicVoice) _loadArabicVoice();
         if (_arabicVoice) utterance.voice = _arabicVoice;
 
         utterance.onend = () => {
             if (iconEl) iconEl.classList.remove('voice-playing');
         };
-        utterance.onerror = () => {
+        utterance.onerror = (e) => {
+            console.warn('TTS error:', e.error);
             if (iconEl) iconEl.classList.remove('voice-playing');
         };
 
