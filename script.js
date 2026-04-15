@@ -93,22 +93,25 @@ function loadDailyWord() {
 }
 
 // ─── Academy Logic ────────────────────────────────────────────────────────
+
+// JS Map stores Arabic text by integer ID — zero HTML escaping needed
+const _voiceMap = new Map();
+let _voiceIdCounter = 0;
+
 function initAcademy() {
     const grid = document.getElementById('academy-dynamic-grid');
     if (!grid) return;
 
     renderAcademy();
 
-    // ── Delegated voice button handler ──────────────────────────────────────
-    // Using data-arabic avoids ALL escaping issues with Arabic diacritics in
-    // inline onclick attributes. We read the text safely from the DOM here.
+    // Delegated listener — reads Arabic text from JS Map (100% encoding-safe)
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.academy-voice-btn');
         if (!btn) return;
-        const arabicText = btn.getAttribute('data-arabic');
-        if (arabicText) {
-            speakArabic(arabicText, null, btn);
-        }
+        e.stopPropagation();
+        const id = parseInt(btn.getAttribute('data-voice-id'), 10);
+        const arabicText = _voiceMap.get(id);
+        if (arabicText) speakAcademyArabic(arabicText, btn);
     });
 
     document.getElementById('academy-next-btn')?.addEventListener('click', () => {
@@ -163,12 +166,12 @@ function renderAcademy() {
         document.getElementById('academy-next-btn').textContent = 'Next: Examples';
         document.getElementById('academy-prev-btn').style.display = 'none';
         grid.innerHTML = data.words.map(w => {
-            // Encode Arabic text into a data attribute — safe from escaping issues
-            const safeArabic = w.arabic.replace(/"/g, '&quot;');
+            const id = _voiceIdCounter++;
+            _voiceMap.set(id, w.arabic);  // store raw Arabic in Map, no encoding
             return `
             <div class="word-card glass-card">
                 <div class="word-arabic">${w.arabic}</div>
-                <button class="academy-voice-btn" data-arabic="${safeArabic}" title="Play Arabic audio">
+                <button class="academy-voice-btn" data-voice-id="${id}" title="Play Arabic audio">
                     <i class="fas fa-volume-up"></i>
                     <span>Play</span>
                 </button>
@@ -183,11 +186,12 @@ function renderAcademy() {
         document.getElementById('academy-next-btn').textContent = 'Next: Exercises';
         document.getElementById('academy-prev-btn').style.display = 'inline-block';
         examplesGrid.innerHTML = data.examples.map(ex => {
-            const safeArabic = ex.arabic.replace(/"/g, '&quot;');
+            const id = _voiceIdCounter++;
+            _voiceMap.set(id, ex.arabic);  // store raw Arabic in Map
             return `
             <div class="academy-example-card">
                 <div class="example-arabic">${ex.arabic}</div>
-                <button class="academy-voice-btn" data-arabic="${safeArabic}" title="Play Arabic audio">
+                <button class="academy-voice-btn" data-voice-id="${id}" title="Play Arabic audio">
                     <i class="fas fa-volume-up"></i>
                     <span>Play</span>
                 </button>
@@ -334,47 +338,51 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
     processTTS(text, iconEl);
 };
 
-function processTTS(text, iconEl) {
-    // Preserve Arabic letters + diacritics (harakat U+0610-U+061A, U+064B-U+065F)
-    // The full Arabic block U+0600-U+06FF covers all Quranic script
-    const cleanText = text.replace(/[^\u0600-\u06FF\s]/g, '').trim();
-    if (!cleanText) return;
+// Dedicated Academy TTS — completely separate from speakArabic (Quran reader)
+// Uses setTimeout to fix Chrome's cancel→speak race condition
+window.speakAcademyArabic = function(text, btnEl) {
+    // Cancel any running audio first
+    if (audioSettings.currentAudio) {
+        audioSettings.currentAudio.pause();
+        audioSettings.currentAudio.currentTime = 0;
+        audioSettings.currentAudio = null;
+    }
 
-    if ('speechSynthesis' in window) {
-        // Always cancel first so repeat-clicks restart audio from beginning
-        window.speechSynthesis.cancel();
+    // Animate the button
+    _animateVoiceIcon(btnEl);
 
-        const utterance = new SpeechSynthesisUtterance(cleanText);
+    if (!('speechSynthesis' in window)) {
+        // No Web Speech API — remove animation and stop
+        if (btnEl) btnEl.classList.remove('voice-playing');
+        return;
+    }
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    // Chrome requires a brief pause after cancel() before speak() works
+    setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'ar-SA';
         utterance.rate = 0.8;
+        utterance.pitch = 1;
+        utterance.volume = 1;
 
-        // Use a specific Arabic voice if available, but ALWAYS speak even without one.
-        // Modern Chrome/Edge/Safari will use their built-in Arabic engine via lang alone.
+        // Assign a specific Arabic voice if available
         if (!_arabicVoice) _loadArabicVoice();
         if (_arabicVoice) utterance.voice = _arabicVoice;
 
         utterance.onend = () => {
-            if (iconEl) iconEl.classList.remove('voice-playing');
+            if (btnEl) btnEl.classList.remove('voice-playing');
         };
-        utterance.onerror = (e) => {
-            console.warn('TTS error:', e.error);
-            if (iconEl) iconEl.classList.remove('voice-playing');
+        utterance.onerror = (ev) => {
+            console.warn('Academy TTS error:', ev.error, '| Text:', text);
+            if (btnEl) btnEl.classList.remove('voice-playing');
         };
 
         window.speechSynthesis.speak(utterance);
-        return;
-    }
-
-    // Cloud Fallback (no native TTS support)
-    const encodedText = encodeURIComponent(cleanText);
-    const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=ar&client=tw-ob`;
-    const audio = new Audio(ttsUrl);
-    audioSettings.currentAudio = audio;
-    audio.play();
-    if (iconEl) {
-        audio.onended = () => iconEl.classList.remove('voice-playing');
-    }
-}
+    }, 150);
+};
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
