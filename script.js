@@ -337,9 +337,8 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
     processTTS(text, iconEl);
 };
 
-// Academy TTS — direct closure, with console logging and Google TTS fallback
+// Academy TTS — Web Speech API with safe timeout guard
 window.speakAcademyArabic = function(text, btnEl) {
-    console.log('[Iqra TTS] Play clicked. Text:', text);
     if (audioSettings.currentAudio) {
         audioSettings.currentAudio.pause();
         audioSettings.currentAudio = null;
@@ -347,30 +346,30 @@ window.speakAcademyArabic = function(text, btnEl) {
     _animateVoiceIcon(btnEl);
     const done = () => { if (btnEl) btnEl.classList.remove('voice-playing'); };
 
-    // Method 1: Web Speech API (works if device has Arabic voice)
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ar-SA';
-        utterance.rate = 0.8;
-        utterance.onstart = () => console.log('[Iqra TTS] Web Speech started ✓');
-        utterance.onend   = () => { console.log('[Iqra TTS] Web Speech done ✓'); done(); };
-        utterance.onerror = (e) => {
-            console.warn('[Iqra TTS] Web Speech error:', e.error, '→ Google TTS');
+    if (!('speechSynthesis' in window)) { done(); return; }
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ar-SA';
+    utterance.rate = 0.8;
+
+    // Flag to track whether speech successfully started
+    let speechStarted = false;
+
+    utterance.onstart = () => { speechStarted = true; };
+    utterance.onend   = () => done();
+    utterance.onerror = () => done();
+
+    window.speechSynthesis.speak(utterance);
+
+    // Safety timeout: only trigger Google TTS if Web Speech NEVER started
+    setTimeout(() => {
+        if (!speechStarted) {
+            window.speechSynthesis.cancel();
             _playGoogleTTS(text, done);
-        };
-        window.speechSynthesis.speak(utterance);
-        // Detect silent failure (no Arabic voice installed) after 600ms
-        setTimeout(() => {
-            if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) {
-                console.warn('[Iqra TTS] Web Speech silent — trying Google TTS');
-                _playGoogleTTS(text, done);
-            }
-        }, 600);
-        return;
-    }
-    // Method 2: Google Translate TTS audio
-    _playGoogleTTS(text, done);
+        }
+    }, 800);
 };
 
 function _playGoogleTTS(text, done) {
