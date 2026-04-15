@@ -252,22 +252,11 @@ function renderAcademy() {
         grid.innerHTML = data.words.map(w => `
             <div class="word-card glass-card">
                 <div class="word-arabic">${w.arabic}</div>
-                <button class="academy-voice-btn" title="Play Arabic audio">
-                    <i class="fas fa-volume-up"></i><span>Play</span>
-                </button>
                 <div class="word-translations">
                     <div class="trans-item"><span class="label">URDU</span><span class="urdu-text">${w.urdu}</span></div>
                     <div class="trans-item"><span class="label">ENG</span><span class="eng-text">${w.english}</span></div>
                 </div>
             </div>`).join('');
-
-        // Speak ONLY the Arabic text shown on screen (not a full Quran ayah)
-        grid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
-            const word = data.words[i];
-            btn.addEventListener('click', function() {
-                speakArabic(word.arabic, null, this);
-            });
-        });
 
     } else if (academyState.step === 2) {
         grid.style.display = 'none'; examplesGrid.style.display = 'block'; quizContainer.style.display = 'none';
@@ -277,22 +266,11 @@ function renderAcademy() {
         examplesGrid.innerHTML = data.examples.map(ex => `
             <div class="academy-example-card">
                 <div class="example-arabic">${ex.arabic}</div>
-                <button class="academy-voice-btn" title="Play Arabic audio">
-                    <i class="fas fa-volume-up"></i><span>Play</span>
-                </button>
                 <div class="example-translations">
                     <div class="example-trans-item"><div class="lang-label">URDU</div><div class="trans-text urdu-font">${ex.urdu}</div></div>
                     <div class="example-trans-item"><div class="lang-label">ENG</div><div class="trans-text">${ex.english}</div></div>
                 </div>
             </div>`).join('');
-
-        // Speak ONLY the Arabic phrase shown on screen (not a full Quran ayah)
-        examplesGrid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
-            const ex = data.examples[i];
-            btn.addEventListener('click', function() {
-                speakArabic(ex.arabic, null, this);
-            });
-        });
 
     } else {
         grid.style.display = 'none'; examplesGrid.style.display = 'none'; quizContainer.style.display = 'block';
@@ -466,10 +444,7 @@ function processTTS(text, iconEl) {
     }
 }
 
-// speakAcademyArabic: thin wrapper kept for backward compat
-window.speakAcademyArabic = function(text, btnEl) {
-    speakArabic(text, null, btnEl);
-};
+// Academy voice removed per user request — Quran section unchanged
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
