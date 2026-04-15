@@ -94,32 +94,18 @@ function loadDailyWord() {
 
 // ─── Academy Logic ────────────────────────────────────────────────────────
 
-// JS Map stores Arabic text by integer ID — zero HTML escaping needed
-const _voiceMap = new Map();
-let _voiceIdCounter = 0;
-
 function initAcademy() {
     const grid = document.getElementById('academy-dynamic-grid');
     if (!grid) return;
 
     renderAcademy();
 
-    // Delegated listener — reads Arabic text from JS Map (100% encoding-safe)
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('.academy-voice-btn');
-        if (!btn) return;
-        e.stopPropagation();
-        const id = parseInt(btn.getAttribute('data-voice-id'), 10);
-        const arabicText = _voiceMap.get(id);
-        if (arabicText) speakAcademyArabic(arabicText, btn);
-    });
-
     document.getElementById('academy-next-btn')?.addEventListener('click', () => {
-        if (academyState.step === 1) { 
-            academyState.step = 2; renderAcademy(); window.scrollTo({ top: 300, behavior: 'smooth' }); 
+        if (academyState.step === 1) {
+            academyState.step = 2; renderAcademy(); window.scrollTo({ top: 300, behavior: 'smooth' });
         } else if (academyState.step === 2) {
             academyState.step = 3; academyState.quizIndex = 0; renderAcademy(); window.scrollTo({ top: 300, behavior: 'smooth' });
-        } else { 
+        } else {
             const data = grammarData[academyState.category];
             if (academyState.quizIndex < data.exercises.length - 1) {
                 academyState.quizIndex++; renderAcademy();
@@ -129,7 +115,7 @@ function initAcademy() {
         }
     });
 
-    document.getElementById('academy-prev-btn')?.addEventListener('click', () => { 
+    document.getElementById('academy-prev-btn')?.addEventListener('click', () => {
         if (academyState.step > 1) { academyState.step--; renderAcademy(); }
     });
 
@@ -165,42 +151,54 @@ function renderAcademy() {
         grid.style.display = 'grid'; examplesGrid.style.display = 'none'; quizContainer.style.display = 'none';
         document.getElementById('academy-next-btn').textContent = 'Next: Examples';
         document.getElementById('academy-prev-btn').style.display = 'none';
-        grid.innerHTML = data.words.map(w => {
-            const id = _voiceIdCounter++;
-            _voiceMap.set(id, w.arabic);  // store raw Arabic in Map, no encoding
-            return `
+
+        // Build HTML (no Arabic text in attributes — attach listeners after)
+        grid.innerHTML = data.words.map(w => `
             <div class="word-card glass-card">
                 <div class="word-arabic">${w.arabic}</div>
-                <button class="academy-voice-btn" data-voice-id="${id}" title="Play Arabic audio">
-                    <i class="fas fa-volume-up"></i>
-                    <span>Play</span>
+                <button class="academy-voice-btn" title="Play Arabic audio">
+                    <i class="fas fa-volume-up"></i><span>Play</span>
                 </button>
                 <div class="word-translations">
                     <div class="trans-item"><span class="label">URDU</span><span class="urdu-text">${w.urdu}</span></div>
                     <div class="trans-item"><span class="label">ENG</span><span class="eng-text">${w.english}</span></div>
                 </div>
-            </div>`;
-        }).join('');
+            </div>`).join('');
+
+        // Attach click listeners AFTER innerHTML — closure captures Arabic string directly
+        grid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
+            const arabicText = data.words[i].arabic;
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                speakAcademyArabic(arabicText, this);
+            });
+        });
+
     } else if (academyState.step === 2) {
         grid.style.display = 'none'; examplesGrid.style.display = 'block'; quizContainer.style.display = 'none';
         document.getElementById('academy-next-btn').textContent = 'Next: Exercises';
         document.getElementById('academy-prev-btn').style.display = 'inline-block';
-        examplesGrid.innerHTML = data.examples.map(ex => {
-            const id = _voiceIdCounter++;
-            _voiceMap.set(id, ex.arabic);  // store raw Arabic in Map
-            return `
+
+        examplesGrid.innerHTML = data.examples.map(ex => `
             <div class="academy-example-card">
                 <div class="example-arabic">${ex.arabic}</div>
-                <button class="academy-voice-btn" data-voice-id="${id}" title="Play Arabic audio">
-                    <i class="fas fa-volume-up"></i>
-                    <span>Play</span>
+                <button class="academy-voice-btn" title="Play Arabic audio">
+                    <i class="fas fa-volume-up"></i><span>Play</span>
                 </button>
                 <div class="example-translations">
                     <div class="example-trans-item"><div class="lang-label">URDU</div><div class="trans-text urdu-font">${ex.urdu}</div></div>
                     <div class="example-trans-item"><div class="lang-label">ENG</div><div class="trans-text">${ex.english}</div></div>
                 </div>
-            </div>`;
-        }).join('');
+            </div>`).join('');
+
+        examplesGrid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
+            const arabicText = data.examples[i].arabic;
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                speakAcademyArabic(arabicText, this);
+            });
+        });
+
     } else {
         grid.style.display = 'none'; examplesGrid.style.display = 'none'; quizContainer.style.display = 'block';
         const isLastQuest = academyState.quizIndex === data.exercises.length - 1;
@@ -209,6 +207,7 @@ function renderAcademy() {
         renderQuiz();
     }
 }
+
 
 function renderQuiz() {
     const data = grammarData[academyState.category];
@@ -338,50 +337,35 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
     processTTS(text, iconEl);
 };
 
-// Dedicated Academy TTS — uses ResponsiveVoice (cloud, works on all browsers)
-// Falls back to Web Speech API if ResponsiveVoice is not loaded
+// Academy TTS — direct closure approach, no attribute parsing
 window.speakAcademyArabic = function(text, btnEl) {
-    // Stop any HTML audio playing
     if (audioSettings.currentAudio) {
         audioSettings.currentAudio.pause();
         audioSettings.currentAudio = null;
     }
-
-    // Animate the button
     _animateVoiceIcon(btnEl);
-
     const done = () => { if (btnEl) btnEl.classList.remove('voice-playing'); };
 
-    // PRIMARY: ResponsiveVoice — cloud-based, no voice pack install needed
+    // PRIMARY: ResponsiveVoice — cloud Arabic TTS, works without installed voice packs
     if (typeof responsiveVoice !== 'undefined') {
         responsiveVoice.cancel();
-        responsiveVoice.speak(text, 'Arabic Male', {
-            rate: 0.9,
-            onend: done,
-            onerror: done
-        });
+        responsiveVoice.speak(text, 'Arabic Male', { rate: 0.9, onend: done, onerror: done });
         return;
     }
 
-    // FALLBACK: Web Speech API (requires Arabic voice installed on OS)
-    if (!('speechSynthesis' in window)) { done(); return; }
-
-    window.speechSynthesis.cancel();
-    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ar-SA';
-    utterance.rate = 0.8;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-    if (!_arabicVoice) _loadArabicVoice();
-    if (_arabicVoice) utterance.voice = _arabicVoice;
-    utterance.onend = done;
-    utterance.onerror = (ev) => {
-        console.warn('Academy TTS fallback error:', ev.error);
-        done();
-    };
-    window.speechSynthesis.speak(utterance);
+    // FALLBACK: Web Speech API
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.8;
+        utterance.onend = done;
+        utterance.onerror = () => done();
+        window.speechSynthesis.speak(utterance);
+        return;
+    }
+    done();
 };
 
 function shuffleArray(array) {
