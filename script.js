@@ -261,11 +261,11 @@ function renderAcademy() {
                 </div>
             </div>`).join('');
 
-        // Direct closure — ayah number comes from grammarData, not string lookup
+        // Speak ONLY the Arabic text shown on screen (not a full Quran ayah)
         grid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
             const word = data.words[i];
             btn.addEventListener('click', function() {
-                speakArabic(word.arabic, word.ayah || null, this);
+                speakArabic(word.arabic, null, this);
             });
         });
 
@@ -286,11 +286,11 @@ function renderAcademy() {
                 </div>
             </div>`).join('');
 
-        // Direct closure — ayah number comes from grammarData, not string lookup
+        // Speak ONLY the Arabic phrase shown on screen (not a full Quran ayah)
         examplesGrid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
             const ex = data.examples[i];
             btn.addEventListener('click', function() {
-                speakArabic(ex.arabic, ex.ayah || null, this);
+                speakArabic(ex.arabic, null, this);
             });
         });
 
@@ -432,21 +432,38 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
     processTTS(text, iconEl);
 };
 
-// processTTS: TTS fallback for text without an ayah number (short vocab words)
-// Called by speakArabic(text, null) — same code path as Quran non-numbered text
+// processTTS: reads the EXACT text passed — no full ayah, no CDN
+// Waits for voices if they haven't loaded yet (fixes silent output on first click)
 function processTTS(text, iconEl) {
-    if (!('speechSynthesis' in window)) { if(iconEl) iconEl.classList.remove('voice-playing'); return; }
+    if (!('speechSynthesis' in window)) {
+        if (iconEl) iconEl.classList.remove('voice-playing');
+        return;
+    }
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ar-SA';
-    utterance.rate = 0.75;
-    utterance.volume = 1;
-    // Assign Arabic voice if available
-    if (!_arabicVoice) _loadArabicVoice();
-    if (_arabicVoice) utterance.voice = _arabicVoice;
-    utterance.onend = () => { if(iconEl) iconEl.classList.remove('voice-playing'); };
-    utterance.onerror = () => { if(iconEl) iconEl.classList.remove('voice-playing'); };
-    window.speechSynthesis.speak(utterance);
+
+    const doSpeak = () => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang   = 'ar-SA';
+        utterance.rate   = 0.72;
+        utterance.pitch  = 0.95;
+        utterance.volume = 1;
+        // Try to assign an Arabic voice
+        if (!_arabicVoice) _loadArabicVoice();
+        if (_arabicVoice)  utterance.voice = _arabicVoice;
+        utterance.onend  = () => { if (iconEl) iconEl.classList.remove('voice-playing'); };
+        utterance.onerror = () => { if (iconEl) iconEl.classList.remove('voice-playing'); };
+        window.speechSynthesis.speak(utterance);
+    };
+
+    // If voices haven't loaded yet, wait for them then speak
+    if (window.speechSynthesis.getVoices().length === 0) {
+        window.speechSynthesis.addEventListener('voiceschanged', () => {
+            _loadArabicVoice();
+            doSpeak();
+        }, { once: true });
+    } else {
+        doSpeak();
+    }
 }
 
 // speakAcademyArabic: thin wrapper kept for backward compat
