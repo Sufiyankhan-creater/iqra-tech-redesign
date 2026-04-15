@@ -261,12 +261,11 @@ function renderAcademy() {
                 </div>
             </div>`).join('');
 
-        // Direct closure — text captured in JS, not HTML attribute
+        // Direct closure — ayah number comes from grammarData, not string lookup
         grid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
-            const text = data.words[i].arabic;
+            const word = data.words[i];
             btn.addEventListener('click', function() {
-                // Reuse the exact same speakArabic function as the Quran Reader
-                speakArabic(text, _ayahMap.get(text) || null, this);
+                speakArabic(word.arabic, word.ayah || null, this);
             });
         });
 
@@ -287,12 +286,11 @@ function renderAcademy() {
                 </div>
             </div>`).join('');
 
-        // Direct closure — text captured in JS, not HTML attribute
+        // Direct closure — ayah number comes from grammarData, not string lookup
         examplesGrid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
-            const text = data.examples[i].arabic;
+            const ex = data.examples[i];
             btn.addEventListener('click', function() {
-                // Examples are real Quran phrases — use Alafasy MP3 via ayah map
-                speakArabic(text, _ayahMap.get(text) || null, this);
+                speakArabic(ex.arabic, ex.ayah || null, this);
             });
         });
 
@@ -451,10 +449,9 @@ function processTTS(text, iconEl) {
     window.speechSynthesis.speak(utterance);
 }
 
-// speakAcademyArabic: now just a thin wrapper around the same speakArabic used by Quran
-// Kept for backward compatibility but all calls now go through speakArabic directly
+// speakAcademyArabic: thin wrapper kept for backward compat
 window.speakAcademyArabic = function(text, btnEl) {
-    speakArabic(text, _ayahMap.get(text) || null, btnEl);
+    speakArabic(text, null, btnEl);
 };
 
 function shuffleArray(array) {
