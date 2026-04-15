@@ -338,7 +338,8 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
     processTTS(text, iconEl);
 };
 
-// Dedicated Academy TTS — called directly from user click (gesture-safe)
+// Dedicated Academy TTS — uses ResponsiveVoice (cloud, works on all browsers)
+// Falls back to Web Speech API if ResponsiveVoice is not loaded
 window.speakAcademyArabic = function(text, btnEl) {
     // Stop any HTML audio playing
     if (audioSettings.currentAudio) {
@@ -346,42 +347,40 @@ window.speakAcademyArabic = function(text, btnEl) {
         audioSettings.currentAudio = null;
     }
 
-    // Animate button immediately (sync — safe)
+    // Animate the button
     _animateVoiceIcon(btnEl);
 
-    if (!('speechSynthesis' in window)) {
-        if (btnEl) btnEl.classList.remove('voice-playing');
+    const done = () => { if (btnEl) btnEl.classList.remove('voice-playing'); };
+
+    // PRIMARY: ResponsiveVoice — cloud-based, no voice pack install needed
+    if (typeof responsiveVoice !== 'undefined') {
+        responsiveVoice.cancel();
+        responsiveVoice.speak(text, 'Arabic Male', {
+            rate: 0.9,
+            onend: done,
+            onerror: done
+        });
         return;
     }
 
-    // IMPORTANT: cancel() + speak() must both be SYNCHRONOUS within the
-    // user click handler. Never use setTimeout here — it breaks Chrome's
-    // user-gesture requirement for audio playback.
-    window.speechSynthesis.cancel();
+    // FALLBACK: Web Speech API (requires Arabic voice installed on OS)
+    if (!('speechSynthesis' in window)) { done(); return; }
 
-    // Chrome sometimes gets stuck in paused state — resume() fixes it
-    if (window.speechSynthesis.paused) {
-        window.speechSynthesis.resume();
-    }
+    window.speechSynthesis.cancel();
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'ar-SA';
     utterance.rate = 0.8;
     utterance.pitch = 1;
     utterance.volume = 1;
-
-    // Use a specific Arabic voice if available; browser uses built-in otherwise
     if (!_arabicVoice) _loadArabicVoice();
     if (_arabicVoice) utterance.voice = _arabicVoice;
-
-    utterance.onend = () => {
-        if (btnEl) btnEl.classList.remove('voice-playing');
-    };
+    utterance.onend = done;
     utterance.onerror = (ev) => {
-        console.warn('Academy TTS error:', ev.error, '| text:', text);
-        if (btnEl) btnEl.classList.remove('voice-playing');
+        console.warn('Academy TTS fallback error:', ev.error);
+        done();
     };
-
     window.speechSynthesis.speak(utterance);
 };
 
