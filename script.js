@@ -94,6 +94,53 @@ function loadDailyWord() {
 
 // ─── Academy Logic ────────────────────────────────────────────────────────
 
+// Maps example phrases (real Quran quotes) ➜ global ayah numbers
+// These play the EXACT same Alafasy MP3 as the Quran Reader section
+const _ayahMap = new Map([
+    // Huruf-e-Jar examples
+    ['بِسْمِ اللَّهِ', 1],
+    ['الْحَمْدُ لِلَّهِ', 2],
+    ['مَالِكِ يَوْمِ الدِّينِ', 4],
+    ['نَعْبُدُ', 5],
+    ['نَسْتَعِينُ', 5],
+    ['إِلَى صِرَاطٍ مُّسْتَقِيمٍ', 6],
+    ['أَنْعَمْتَ عَلَيْهِمْ', 7],
+    ['فِي الدِّينِ', 263],
+    ['عَلَى الْعَرْشِ', 2353],
+    ['مِنَ النَّاسِ', 6236],
+    ['لِأُولِي الْأَلْبَابِ', 300],
+    ['مِنَ الْمُسْلِمِينَ', 360],
+    ['عَنِ الصَّلَاةِ', 6202],
+    ['كَالْعَهْنِ الْمَنفُوشِ', 6162],
+    ['حَتَّى مَطْلَعِ الْفَجْرِ', 6130],
+    ['وَالتِّينِ وَالزَّيْتُونِ', 6099],
+    ['كَالْفَرَاشِ الْمَبْثُوثِ', 6161],
+    ['عَنِ النَّعِيمِ', 6176],
+    ['بِالْحَقِّ', 2110],
+    ['فِي الْأَرْضِ', 18],
+    ['إِلَى رَبِّكَ', 5890],
+    ['فِي جَنَّاتٍ', 4991],
+    ['إِلَى النُّورِ', 5228],
+    ['عَلَى قُلُوبِهِمْ', 14],
+    // Attached pronoun examples
+    ['عَلَيْكُمْ', 7],
+    ['فِيهِ', 5],
+    ['هُوَ اللَّهُ', 6222],
+    ['نَصَرُوا اللَّهَ', 3374],
+    // Detached pronoun examples
+    ['نَحْنُ خَلَقْنَاكُمْ', 5575],
+    ['هُمُ الْمُفْلِحُونَ', 8],
+    // Past tense examples
+    ['خَلَقَ الْإِنسَانَ', 5795],
+    ['جَاءَ نَصْرُ اللَّهِ', 6214],
+    ['قَتَلَ دَاوُودُ جَالُوتَ', 255],
+    ['غَلَبَتِ الرُّومُ', 1667],
+    // Universal tense examples
+    ['يَضْرِبُ اللَّهُ الْأَمْثَالَ', 1773],
+    ['يَهْدِي اللَّهُ لِنُورِهِ', 2465],
+    ['يَرْزُقُ مَنْ يَشَاءُ', 1764],
+]);
+
 function initAcademy() {
     const grid = document.getElementById('academy-dynamic-grid');
     if (!grid) return;
@@ -152,7 +199,6 @@ function renderAcademy() {
         document.getElementById('academy-next-btn').textContent = 'Next: Examples';
         document.getElementById('academy-prev-btn').style.display = 'none';
 
-        // Build HTML (no Arabic text in attributes — attach listeners after)
         grid.innerHTML = data.words.map(w => `
             <div class="word-card glass-card">
                 <div class="word-arabic">${w.arabic}</div>
@@ -165,12 +211,12 @@ function renderAcademy() {
                 </div>
             </div>`).join('');
 
-        // Attach click listeners AFTER innerHTML — closure captures Arabic string directly
+        // Direct closure — text captured in JS, not HTML attribute
         grid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
-            const arabicText = data.words[i].arabic;
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                speakAcademyArabic(arabicText, this);
+            const text = data.words[i].arabic;
+            btn.addEventListener('click', function() {
+                // Reuse the exact same speakArabic function as the Quran Reader
+                speakArabic(text, _ayahMap.get(text) || null, this);
             });
         });
 
@@ -191,11 +237,12 @@ function renderAcademy() {
                 </div>
             </div>`).join('');
 
+        // Direct closure — text captured in JS, not HTML attribute
         examplesGrid.querySelectorAll('.academy-voice-btn').forEach((btn, i) => {
-            const arabicText = data.examples[i].arabic;
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                speakAcademyArabic(arabicText, this);
+            const text = data.examples[i].arabic;
+            btn.addEventListener('click', function() {
+                // Examples are real Quran phrases — use Alafasy MP3 via ayah map
+                speakArabic(text, _ayahMap.get(text) || null, this);
             });
         });
 
@@ -337,52 +384,28 @@ window.speakArabic = function(text, ayahNumber, iconEl) {
     processTTS(text, iconEl);
 };
 
-// Academy TTS — Web Speech API with safe timeout guard
-window.speakAcademyArabic = function(text, btnEl) {
-    if (audioSettings.currentAudio) {
-        audioSettings.currentAudio.pause();
-        audioSettings.currentAudio = null;
-    }
-    _animateVoiceIcon(btnEl);
-    const done = () => { if (btnEl) btnEl.classList.remove('voice-playing'); };
-
-    if (!('speechSynthesis' in window)) { done(); return; }
-
+// processTTS: TTS fallback for text without an ayah number (short vocab words)
+// Called by speakArabic(text, null) — same code path as Quran non-numbered text
+function processTTS(text, iconEl) {
+    if (!('speechSynthesis' in window)) { if(iconEl) iconEl.classList.remove('voice-playing'); return; }
     window.speechSynthesis.cancel();
-
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'ar-SA';
-    utterance.rate = 0.8;
-
-    // Flag to track whether speech successfully started
-    let speechStarted = false;
-
-    utterance.onstart = () => { speechStarted = true; };
-    utterance.onend   = () => done();
-    utterance.onerror = () => done();
-
+    utterance.rate = 0.75;
+    utterance.volume = 1;
+    // Assign Arabic voice if available
+    if (!_arabicVoice) _loadArabicVoice();
+    if (_arabicVoice) utterance.voice = _arabicVoice;
+    utterance.onend = () => { if(iconEl) iconEl.classList.remove('voice-playing'); };
+    utterance.onerror = () => { if(iconEl) iconEl.classList.remove('voice-playing'); };
     window.speechSynthesis.speak(utterance);
-
-    // Safety timeout: only trigger Google TTS if Web Speech NEVER started
-    setTimeout(() => {
-        if (!speechStarted) {
-            window.speechSynthesis.cancel();
-            _playGoogleTTS(text, done);
-        }
-    }, 800);
-};
-
-function _playGoogleTTS(text, done) {
-    const url = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar&q='
-              + encodeURIComponent(text);
-    console.log('[Iqra TTS] Google TTS URL:', url);
-    const audio = new Audio(url);
-    audioSettings.currentAudio = audio;
-    audio.onended = () => { console.log('[Iqra TTS] Google TTS done ✓'); if(done) done(); };
-    audio.onerror = (e) => { console.warn('[Iqra TTS] Google TTS error:', e); if(done) done(); };
-    audio.play().catch(e => { console.warn('[Iqra TTS] play() rejected:', e); if(done) done(); });
 }
 
+// speakAcademyArabic: now just a thin wrapper around the same speakArabic used by Quran
+// Kept for backward compatibility but all calls now go through speakArabic directly
+window.speakAcademyArabic = function(text, btnEl) {
+    speakArabic(text, _ayahMap.get(text) || null, btnEl);
+};
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
