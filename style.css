@@ -1289,108 +1289,6 @@ footer {
     animation: voice-spin 1.2s linear infinite;
 }
 
-/* ========================================
-   Innovation Portfolio Styles
-   ======================================== */
-.portfolio-section {
-    padding-bottom: 120px;
-}
-
-.portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
-}
-
-.project-card {
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-.project-img {
-    height: 220px;
-    position: relative;
-    overflow: hidden;
-    background: #000;
-}
-
-.project-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.iqra-preview-box {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at center, #0a1f1a, #05050a);
-}
-
-.arabic-shadow {
-    font-family: 'Amiri', serif;
-    font-size: 5rem;
-    color: rgba(240, 189, 90, 0.1);
-    text-shadow: 0 0 30px rgba(240, 189, 90, 0.2);
-    user-select: none;
-}
-
-.project-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(5, 5, 10, 0.7);
-    backdrop-filter: blur(5px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: var(--transition);
-}
-
-.project-card:hover .project-overlay {
-    opacity: 1;
-}
-
-.project-card:hover .project-img img {
-    transform: scale(1.1);
-}
-
-.project-info {
-    padding: 2rem;
-}
-
-.tech-stack {
-    display: flex;
-    gap: 0.8rem;
-    margin-bottom: 1rem;
-}
-
-.tech-stack span {
-    font-size: 0.6rem;
-    padding: 0.2rem 0.6rem;
-    background: rgba(0, 242, 255, 0.1);
-    color: #00f2ff;
-    border-radius: 4px;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.project-info h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.8rem;
-    color: var(--text-white);
-}
-
-.project-info p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-}
 
 /* ========================================
    Mobile Navigation Styles
@@ -1570,14 +1468,6 @@ footer {
         font-size: 2rem;
     }
 
-    /* Portfolio */
-    #portfolio {
-        display: none;
-    }
-
-    .portfolio-grid {
-        grid-template-columns: 1fr;
-    }
 
     /* Academy Fixes */
     .academy-dashboard-bar {
