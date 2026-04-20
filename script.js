@@ -55,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     animateStats();
     initScrollReveal();
+    initMobileMenu();
+    registerServiceWorker();
 });
 
 function initLoaders() {
@@ -601,6 +603,7 @@ function initParticles() {
 function animateStats() {
     document.querySelectorAll('.stat-number').forEach(stat => {
         const target = parseInt(stat.getAttribute('data-target'));
+        if (isNaN(target)) return;
         let current = 0;
         const update = () => {
             if (current < target) {
@@ -611,4 +614,49 @@ function animateStats() {
         };
         update();
     });
+}
+
+// ─── Mobile Menu Logic ──────────────────────────────────────────────────────
+function initMobileMenu() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            menuBtn.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+                menuBtn.classList.remove('active');
+            }
+        });
+
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuBtn.classList.remove('active');
+            });
+        });
+    }
+}
+
+// ─── PWA Service Worker ─────────────────────────────────────────────────────
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('SW registered: ', registration);
+                })
+                .catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+        });
+    }
 }

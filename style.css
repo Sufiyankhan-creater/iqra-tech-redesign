@@ -1288,3 +1288,406 @@ footer {
 .academy-voice-btn.voice-playing i {
     animation: voice-spin 1.2s linear infinite;
 }
+
+/* ========================================
+   Innovation Portfolio Styles
+   ======================================== */
+.portfolio-section {
+    padding-bottom: 120px;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+}
+
+.project-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-img {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+}
+
+.project-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.iqra-preview-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #0a1f1a, #05050a);
+}
+
+.arabic-shadow {
+    font-family: 'Amiri', serif;
+    font-size: 5rem;
+    color: rgba(240, 189, 90, 0.1);
+    text-shadow: 0 0 30px rgba(240, 189, 90, 0.2);
+    user-select: none;
+}
+
+.project-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(5, 5, 10, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.project-card:hover .project-overlay {
+    opacity: 1;
+}
+
+.project-card:hover .project-img img {
+    transform: scale(1.1);
+}
+
+.project-info {
+    padding: 2rem;
+}
+
+.tech-stack {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.tech-stack span {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    background: rgba(0, 242, 255, 0.1);
+    color: #00f2ff;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.project-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-white);
+}
+
+.project-info p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ========================================
+   Mobile Navigation Styles
+   ======================================== */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.mobile-menu-toggle span {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text-white);
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* ========================================
+   General Responsiveness (Large Media Query Block)
+   ======================================== */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .hero-layout {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    section {
+        padding: 60px 0;
+    }
+
+    .hero-layout {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 40px;
+    }
+
+    .hero-left {
+        text-align: center;
+    }
+
+    .hero-left p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cta-group {
+        justify-content: center;
+    }
+
+    .hero-stats-mini {
+        justify-content: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem 1.5rem;
+    }
+
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bento-item.large, .bento-item.wide {
+        grid-row: span 1;
+        grid-column: span 1;
+    }
+
+    .roots-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .roots-content {
+        order: 2;
+    }
+
+    .roots-visual {
+        order: 1;
+        margin-bottom: 3rem;
+    }
+
+    .section-title {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Navbar Mobile */
+    nav .container {
+        padding: 0.5rem 1.5rem;
+    }
+
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(5, 5, 10, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 4rem 2rem;
+        transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border-left: 1px solid var(--glass-border);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links li {
+        margin-bottom: 2rem;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem;
+    }
+
+    .hide-mobile {
+        display: none;
+    }
+
+    /* Hero Fixes */
+    .hero-left h1 {
+        font-size: 3rem;
+    }
+
+    .wotd-card-new {
+        max-width: 320px;
+        padding: 1.5rem;
+    }
+
+    .wotd-card-arabic {
+        font-size: 3.5rem;
+    }
+
+    /* Stats Fixes */
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    /* Portfolio */
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Academy Fixes */
+    .academy-dashboard-bar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .dashboard-card {
+        padding: 1rem 1.5rem !important;
+    }
+
+    .dashboard-card i {
+        font-size: 1.4rem !important;
+    }
+
+    .sub-nav-links {
+        gap: 0.5rem;
+    }
+
+    .sub-nav-links a {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+    }
+
+    .academy-word-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .word-card {
+        padding: 2rem 1rem;
+    }
+
+    .word-arabic {
+        font-size: 3rem;
+    }
+
+    /* Quran Reader Mobile */
+    .reader-ayat-card {
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .arabic-focal {
+        font-size: 1.8rem;
+        line-height: 1.6;
+    }
+
+    .translation-group {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .urdu-font-reader {
+        font-size: 1.3rem;
+    }
+
+    .reader-header-new .container {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    /* CTA Section */
+    .cta-section h2 {
+        font-size: 2.2rem !important;
+    }
+
+    .cta-section p {
+        font-size: 1rem !important;
+    }
+
+    .cta-section div {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cta-section .btn {
+        width: 100%;
+        padding: 1rem !important;
+    }
+
+    /* Dictionary Page fix */
+    .dictionary-content .glass-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.5rem;
+    }
+
+    .dictionary-content .glass-card > div {
+        min-width: unset !important;
+        flex: unset !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-left h1 {
+        font-size: 2.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .root-node {
+        width: 260px;
+        height: 260px;
+    }
+
+    .root-core {
+        font-size: 4rem;
+    }
+
+    .branch {
+        font-size: 1.1rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

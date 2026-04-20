@@ -7,6 +7,11 @@
     <meta name="description" content="Master Quranic Arabic grammar with Iqra Tech's interactive Academy. Learn Huruf-e-Jar, pronouns, verb tenses, and morphology through step-by-step lessons.">
     <meta name="keywords" content="Quranic grammar, Arabic lessons, Huruf-e-Jar, Islamic education, Arabic morphology">
     <meta name="author" content="Iqra Tech Project">
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00a884">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -24,7 +29,14 @@
                 <li><a href="quran.html">Quran</a></li>
                 <li><a href="dictionary.html">Dictionary</a></li>
             </ul>
-            <a href="dictionary.html" class="btn btn-teal" style="padding: 0.6rem 1.5rem; font-size: 0.7rem;">Download PDF</a>
+            <div class="nav-actions">
+                <a href="dictionary.html" class="btn btn-teal hide-mobile" style="padding: 0.6rem 1.5rem; font-size: 0.7rem;">Download PDF</a>
+                <button id="mobile-menu-btn" class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </nav>
 

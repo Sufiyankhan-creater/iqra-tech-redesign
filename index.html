@@ -10,6 +10,11 @@
     <meta property="og:title" content="Iqra Tech | Master Quranic Arabic">
     <meta property="og:description" content="Unlock the profound linguistic beauty of the Quran with our interactive dictionary and grammar academy.">
     <meta property="og:type" content="website">
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00a884">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    
     <link rel="stylesheet" href="style.css">
     <!-- Font Awesome for social icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -36,7 +41,14 @@
                 <li><a href="quran.html">Quran</a></li>
                 <li><a href="dictionary.html">Dictionary</a></li>
             </ul>
-            <a href="dictionary.html" class="btn btn-teal" style="padding: 0.6rem 1.5rem; font-size: 0.7rem;">Download PDF</a>
+            <div class="nav-actions">
+                <a href="dictionary.html" class="btn btn-teal hide-mobile" style="padding: 0.6rem 1.5rem; font-size: 0.7rem;">Download PDF</a>
+                <button id="mobile-menu-btn" class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -184,6 +196,78 @@
                     <div style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 1.5rem;">03</div>
                     <h4 style="font-size: 1.4rem; color: #fff; margin-bottom: 1rem;">Deep Integration</h4>
                     <p style="color: var(--text-muted); font-size: 0.9rem;">Map complex trilateral roots and observe their semantic evolution across all 114 Surahs in our Explorer.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Innovation Portfolio Section -->
+    <section id="portfolio" class="portfolio-section reveal">
+        <div class="container">
+            <div class="subtitle-badge">Our Ecosystem</div>
+            <h2 class="section-title">Innovation <span>Portfolio</span></h2>
+            <p class="section-subtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 4rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                Beyond linguistic excellence, we build digital solutions that simplify lives and empower businesses across diverse domains.
+            </p>
+
+            <div class="portfolio-grid">
+                <!-- QuickTurf -->
+                <div class="project-card glass-card">
+                    <div class="project-img">
+                        <img src="assets/projects/quickturf.png" alt="QuickTurf Mockup">
+                        <div class="project-overlay">
+                            <a href="https://github.com/Sufiyankhan-creater/QuickTurf" class="btn btn-teal" target="_blank">View Project</a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="tech-stack">
+                            <span>.NET MAUI</span>
+                            <span>PWA</span>
+                            <span>Firebase</span>
+                        </div>
+                        <h3>QuickTurf</h3>
+                        <p>A comprehensive turf booking and management system for real-time slot allocation and payments.</p>
+                    </div>
+                </div>
+
+                <!-- QuickTick -->
+                <div class="project-card glass-card">
+                    <div class="project-img">
+                        <img src="assets/projects/quicktick.png" alt="QuickTick Mockup">
+                        <div class="project-overlay">
+                            <a href="https://github.com/Sufiyankhan-creater/QuickTick" class="btn btn-teal" target="_blank">Explore Dashboard</a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="tech-stack">
+                            <span>QR Tech</span>
+                            <span>Real-time JS</span>
+                            <span>Cloud</span>
+                        </div>
+                        <h3>QuickTick</h3>
+                        <p>Revolutionizing restaurant operations with a seamless QR-based ordering engine and kitchen dashboard.</p>
+                    </div>
+                </div>
+
+                <!-- Iqra Tech Reader (Current) -->
+                <div class="project-card glass-card">
+                    <div class="project-img">
+                        <div class="iqra-preview-box">
+                            <span class="arabic-shadow">سَلَام</span>
+                            <div class="project-overlay">
+                                <a href="quran.html" class="btn btn-teal">Read Quran</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="tech-stack">
+                            <span>Vanilla JS</span>
+                            <span>Morphology</span>
+                            <span>Trilingual</span>
+                        </div>
+                        <h3>Iqra Reader</h3>
+                        <p>Deep linguistic analysis engine with interactive morphological root mapping and academy.</p>
+                    </div>
                 </div>
             </div>
         </div>
