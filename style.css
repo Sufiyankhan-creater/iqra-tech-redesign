@@ -1571,6 +1571,10 @@ footer {
     }
 
     /* Portfolio */
+    #portfolio {
+        display: none;
+    }
+
     .portfolio-grid {
         grid-template-columns: 1fr;
     }
