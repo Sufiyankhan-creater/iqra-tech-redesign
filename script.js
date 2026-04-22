@@ -532,7 +532,7 @@ window.loadJuz = async function (juzNumber) {
         // Fetch Arabic, Urdu, and English in parallel
         const [arRes, urRes, enRes] = await Promise.all([
             fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/quran-uthmani`),
-            fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/ur.ahmedali`),
+            fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/ur.maududi`),
             fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/en.sahih`)
         ]);
 
@@ -578,7 +578,8 @@ window.loadJuz = async function (juzNumber) {
             `).join('') + `</div>`;
         }
     } catch (err) {
-        content.innerHTML = `<p style="text-align: center; color: #ff5555;">Transmission Error. Please check connection.</p>`;
+        console.error("Full Error:", err);
+        content.innerHTML = `<p style="text-align: center; color: #ff5555;">Transmission Error: ${err.message || err.toString()}</p>`;
     }
 }
 
