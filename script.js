@@ -529,10 +529,10 @@ window.loadJuz = async function (juzNumber) {
     content.innerHTML = `<div id="reader-loading" style="text-align: center; padding: 5rem 0;"><div class="loader-bar" style="margin: 0 auto 1.5rem;"><div class="loader-progress"></div></div><p style="color: var(--text-muted);">Retrieving Divine Data...</p></div>`;
 
     try {
-        // Fetch Arabic and English from API, Urdu from local data
+        // Fetch Arabic, Urdu, and English in parallel
         const [arRes, urRes, enRes] = await Promise.all([
             fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/quran-uthmani`),
-            fetch(`data/nazar/juz-${juzNumber}.json`),
+            fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/ur.ahmedali`),
             fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/en.sahih`)
         ]);
 
