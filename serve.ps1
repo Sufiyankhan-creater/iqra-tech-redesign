@@ -28,10 +28,11 @@ try {
                     $extension = [System.IO.Path]::GetExtension($filePath)
                     $contentType = switch ($extension) {
                         ".html" { "text/html" }
-                        ".css"  { "text/css" }
-                        ".js"   { "application/javascript" }
-                        ".png"  { "image/png" }
-                        ".jpg"  { "image/jpeg" }
+                        ".css" { "text/css" }
+                        ".js" { "application/javascript" }
+                        ".json" { "application/json" }
+                        ".png" { "image/png" }
+                        ".jpg" { "image/jpeg" }
                         default { "application/octet-stream" }
                     }
 
@@ -39,10 +40,12 @@ try {
                     $writer.WriteLine("Content-Type: $contentType")
                     $writer.WriteLine("Content-Length: $($content.Length)")
                     $writer.WriteLine("Access-Control-Allow-Origin: *")
+                    $writer.WriteLine("Cache-Control: no-cache, no-store, must-revalidate")
                     $writer.WriteLine("")
                     $writer.Flush()
                     $stream.Write($content, 0, $content.Length)
-                } else {
+                }
+                else {
                     $writer.WriteLine("HTTP/1.1 404 Not Found")
                     $writer.WriteLine("")
                 }
@@ -51,6 +54,7 @@ try {
         }
         Start-Sleep -Milliseconds 50
     }
-} finally {
+}
+finally {
     $listener.Stop()
 }

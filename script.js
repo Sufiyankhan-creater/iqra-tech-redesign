@@ -33,10 +33,10 @@ const quranicWords = [
 
 // ─── Academy & Global State ────────────────────────────────────────────────
 let academyState = { category: 'huruf-e-jar', step: 1, quizIndex: 0, quizAttempts: 0 };
-let audioSettings = { 
-    reciter: 'ar.alafasy', 
-    mode: 'professional', 
-    currentAudio: null 
+let audioSettings = {
+    reciter: 'ar.alafasy',
+    mode: 'professional',
+    currentAudio: null
 };
 const categoryInfo = {
     'huruf-e-jar': { step1: 'STEP 1: DISCOVER', step2: 'STEP 2: APPLY', step3: 'STEP 3: MASTER', title: 'Huruf-e-Jar', desc: 'Prepositions that influence the case of the following noun.' },
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initLoaders() {
     const loader = document.getElementById('loader');
     window.addEventListener('load', () => {
-        setTimeout(() => { if(loader) loader.style.opacity = '0'; setTimeout(() => { if(loader) loader.style.display = 'none'; }, 500); }, 800);
+        setTimeout(() => { if (loader) loader.style.opacity = '0'; setTimeout(() => { if (loader) loader.style.display = 'none'; }, 500); }, 800);
     });
 }
 
@@ -82,8 +82,8 @@ function initScrollReveal() {
 function loadDailyWord() {
     const day = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
     const word = quranicWords[(day + 7) % quranicWords.length];
-    
-    if(document.querySelector('.wotd-card-arabic')) {
+
+    if (document.querySelector('.wotd-card-arabic')) {
         document.querySelector('.wotd-card-arabic').textContent = word.arabic;
         document.querySelector('.wotd-card-meaning').innerHTML = `
             <span class="urdu-text" style="font-family: 'Amiri', serif; font-size: 1.4rem;">${word.transliteration}</span>
@@ -103,50 +103,50 @@ const _ayahMap = new Map([
 
     // ── HURUF-E-JAR VOCABULARY (Step 1) ─────────────────────────────────────
     // Each particle mapped to a short Quran ayah that prominently contains it
-    ['مِنْ',   6236],  // 114:6  "مِنَ الْجِنَّةِ وَالنَّاسِ"
-    ['إِلَى',  6114],  // 96:8   "إِنَّ إِلَىٰ رَبِّكَ الرُّجْعَىٰ"
-    ['عَلَى',  7],     // 1:7    "أَنْعَمْتَ عَلَيْهِمْ"
-    ['فِي',    9],     // 2:2    "لَا رَيْبَ فِيهِ هُدًى"
-    ['بِ',     1],     // 1:1    "بِسْمِ اللَّهِ الرَّحْمَٰنِ"
-    ['لِ',     2],     // 1:2    "الْحَمْدُ لِلَّهِ رَبِّ"
-    ['عَنْ',   6202],  // 107:5  "عَن صَلَاتِهِمْ سَاهُونَ"
-    ['كَ',     6161],  // 101:4  "كَالْفَرَاشِ الْمَبْثُوثِ"
+    ['مِنْ', 6236],  // 114:6  "مِنَ الْجِنَّةِ وَالنَّاسِ"
+    ['إِلَى', 6114],  // 96:8   "إِنَّ إِلَىٰ رَبِّكَ الرُّجْعَىٰ"
+    ['عَلَى', 7],     // 1:7    "أَنْعَمْتَ عَلَيْهِمْ"
+    ['فِي', 9],     // 2:2    "لَا رَيْبَ فِيهِ هُدًى"
+    ['بِ', 1],     // 1:1    "بِسْمِ اللَّهِ الرَّحْمَٰنِ"
+    ['لِ', 2],     // 1:2    "الْحَمْدُ لِلَّهِ رَبِّ"
+    ['عَنْ', 6202],  // 107:5  "عَن صَلَاتِهِمْ سَاهُونَ"
+    ['كَ', 6161],  // 101:4  "كَالْفَرَاشِ الْمَبْثُوثِ"
     ['حَتَّى', 6130],  // 97:5   "حَتَّىٰ مَطْلَعِ الْفَجْرِ"
-    ['و',      6099],  // 95:1   "وَالتِّينِ وَالزَّيْتُونِ"
-    ['ت',      6099],  // 95:1   same
+    ['و', 6099],  // 95:1   "وَالتِّينِ وَالزَّيْتُونِ"
+    ['ت', 6099],  // 95:1   same
 
     // ── ATTACHED PRONOUNS VOCABULARY (Step 1) ────────────────────────────────
-    ['هُ',     6222],  // 112:1 "قُلْ هُوَ اللَّهُ أَحَدٌ"
-    ['هُمَا',  2],     // 1:2   (closest Fatiha ayah with dual context)
-    ['هُمْ',   12],    // 2:5   "هُمُ الْمُفْلِحُونَ"
-    ['هَا',    6140],  // 99:2  "وَأَخْرَجَتِ الْأَرْضُ أَثْقَالَهَا"
-    ['ي',      5],     // 1:5   "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ"
-    ['نَا',    5],     // 1:5   "نَسْتَعِينُ"
-    ['كُمْ',   190],   // 2:183 "كُتِبَ عَلَيْكُمُ الصِّيَامُ"
+    ['هُ', 6222],  // 112:1 "قُلْ هُوَ اللَّهُ أَحَدٌ"
+    ['هُمَا', 2],     // 1:2   (closest Fatiha ayah with dual context)
+    ['هُمْ', 12],    // 2:5   "هُمُ الْمُفْلِحُونَ"
+    ['هَا', 6140],  // 99:2  "وَأَخْرَجَتِ الْأَرْضُ أَثْقَالَهَا"
+    ['ي', 5],     // 1:5   "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ"
+    ['نَا', 5],     // 1:5   "نَسْتَعِينُ"
+    ['كُمْ', 190],   // 2:183 "كُتِبَ عَلَيْكُمُ الصِّيَامُ"
 
     // ── DETACHED PRONOUNS VOCABULARY (Step 1) ────────────────────────────────
-    ['هُوَ',   6222],  // 112:1 "قُلْ هُوَ اللَّهُ أَحَدٌ"
+    ['هُوَ', 6222],  // 112:1 "قُلْ هُوَ اللَّهُ أَحَدٌ"
     ['أَنْتَ', 5],     // 1:5
-    ['أَنْتُمْ',190],  // 2:183
-    ['أَنَا',  3282],  // 28:30 "إِنِّي أَنَا اللَّهُ"
+    ['أَنْتُمْ', 190],  // 2:183
+    ['أَنَا', 3282],  // 28:30 "إِنِّي أَنَا اللَّهُ"
     ['نَحْنُ', 1811],  // 15:9  "إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ"
-    ['هِيَ',   6225],  // 112:4 "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ"
+    ['هِيَ', 6225],  // 112:4 "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ"
     ['أَنْتِ', 5],     // 1:5
 
     // ── PAST TENSE VOCABULARY (Step 1) ───────────────────────────────────────
-    ['فَعَلَ',    6189], // 105:1 "أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ"
-    ['فَعَلُوا',  5],    // 1:5
-    ['فَعَلْتَ',  2951], // 26:19 "وَفَعَلْتَ فَعْلَتَكَ الَّتِي فَعَلْتَ"
-    ['فَعَلْتُمْ',5],
-    ['فَعَلْتُ',  5],
+    ['فَعَلَ', 6189], // 105:1 "أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ"
+    ['فَعَلُوا', 5],    // 1:5
+    ['فَعَلْتَ', 2951], // 26:19 "وَفَعَلْتَ فَعْلَتَكَ الَّتِي فَعَلْتَ"
+    ['فَعَلْتُمْ', 5],
+    ['فَعَلْتُ', 5],
     ['فَعَلْنَا', 5],
 
     // ── UNIVERSAL TENSE VOCABULARY (Step 1) ──────────────────────────────────
-    ['يَفْعَلُ',    5],
+    ['يَفْعَلُ', 5],
     ['يَفْعَلُونَ', 15],   // 2:8  "وَمِنَ النَّاسِ مَن يَقُولُ"
-    ['تَفْعَلُ',    5],
-    ['أَفْعَلُ',    5],
-    ['نَفْعَلُ',    5],
+    ['تَفْعَلُ', 5],
+    ['أَفْعَلُ', 5],
+    ['نَفْعَلُ', 5],
 
     // ── HURUF-E-JAR EXAMPLES (Step 2) ────────────────────────────────────────
     ['بِسْمِ اللَّهِ', 1],
@@ -317,13 +317,13 @@ function renderQuiz() {
     }
 }
 
-window.checkQuizAnswer = function(selected) {
+window.checkQuizAnswer = function (selected) {
     const data = grammarData[academyState.category];
     const quiz = data.exercises[academyState.quizIndex];
     const feedback = document.getElementById('quiz-feedback-box');
 
     feedback.style.display = 'block';
-    
+
     if (selected === quiz.answer || selected === 'All') {
         feedback.style.background = 'rgba(0, 168, 132, 0.2)';
         feedback.style.color = 'var(--accent-teal)';
@@ -332,12 +332,12 @@ window.checkQuizAnswer = function(selected) {
         academyState.quizAttempts = 0; // Reset for next question
     } else {
         academyState.quizAttempts++;
-        
+
         if (academyState.quizAttempts < 2) {
             feedback.style.background = 'rgba(240, 189, 90, 0.1)';
             feedback.style.color = 'var(--accent-gold)';
             feedback.innerHTML = `<i class="fas fa-exclamation-circle"></i> Not quite right. You have one more chance! Analyze the grammar again.`;
-            
+
             // Visual shake to indicate retry
             const options = document.getElementById('quiz-options-grid');
             options.classList.add('shake-anim');
@@ -347,11 +347,11 @@ window.checkQuizAnswer = function(selected) {
             feedback.style.color = '#ff5555';
             feedback.innerHTML = `<i class="fas fa-times-circle"></i> Incorrect. Shuffling examples to strengthen your understanding...`;
             document.getElementById('academy-next-btn').classList.remove('glow-gold');
-            
+
             // SHUFFLE LOGIC: Only on 2nd failure
             setTimeout(() => {
                 shuffleArray(data.exercises);
-                academyState.quizIndex = 0; 
+                academyState.quizIndex = 0;
                 academyState.quizAttempts = 0;
                 renderAcademy();
             }, 1500);
@@ -367,8 +367,8 @@ function _loadArabicVoice() {
     const voices = window.speechSynthesis.getVoices();
     const female = voices.find(v => v.lang.startsWith('ar') &&
         (v.name.toLowerCase().includes('female') ||
-         v.name.toLowerCase().includes('laila') ||
-         v.name.toLowerCase().includes('amira')));
+            v.name.toLowerCase().includes('laila') ||
+            v.name.toLowerCase().includes('amira')));
     _arabicVoice = female || voices.find(v => v.lang.startsWith('ar')) || null;
 }
 if ('speechSynthesis' in window) {
@@ -386,7 +386,7 @@ function _animateVoiceIcon(iconEl) {
 }
 
 // Main speak function — unchanged signature so Quran section is unaffected
-window.speakArabic = function(text, ayahNumber, iconEl) {
+window.speakArabic = function (text, ayahNumber, iconEl) {
     // Stop any current audio
     if (audioSettings.currentAudio) {
         audioSettings.currentAudio.pause();
@@ -423,14 +423,14 @@ function processTTS(text, iconEl) {
 
     const doSpeak = () => {
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang   = 'ar-SA';
-        utterance.rate   = 0.72;
-        utterance.pitch  = 0.95;
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.72;
+        utterance.pitch = 0.95;
         utterance.volume = 1;
         // Try to assign an Arabic voice
         if (!_arabicVoice) _loadArabicVoice();
-        if (_arabicVoice)  utterance.voice = _arabicVoice;
-        utterance.onend  = () => { if (iconEl) iconEl.classList.remove('voice-playing'); };
+        if (_arabicVoice) utterance.voice = _arabicVoice;
+        utterance.onend = () => { if (iconEl) iconEl.classList.remove('voice-playing'); };
         utterance.onerror = () => { if (iconEl) iconEl.classList.remove('voice-playing'); };
         window.speechSynthesis.speak(utterance);
     };
@@ -487,10 +487,10 @@ function showCompletionModal() {
     document.body.appendChild(modal);
 }
 
-window.moveToNextTopic = function(nextCat) {
+window.moveToNextTopic = function (nextCat) {
     const modal = document.querySelector('.congrats-modal');
-    if(modal) modal.remove();
-    
+    if (modal) modal.remove();
+
     // Update State
     academyState.category = nextCat;
     academyState.step = 1;
@@ -499,7 +499,7 @@ window.moveToNextTopic = function(nextCat) {
     // Update Tab UI
     document.querySelectorAll('.academy-tab').forEach(t => {
         t.classList.remove('active');
-        if(t.getAttribute('data-category') === nextCat) t.classList.add('active');
+        if (t.getAttribute('data-category') === nextCat) t.classList.add('active');
     });
 
     renderAcademy();
@@ -509,7 +509,7 @@ window.moveToNextTopic = function(nextCat) {
 // ─── Quran Explorer Logic (30 Paras) ──────────────────────────────────────
 function initQuranExplorer() {
     const closeBtn = document.getElementById('close-reader');
-    if(closeBtn) {
+    if (closeBtn) {
         closeBtn.onclick = () => {
             document.getElementById('quran-reader-overlay').style.display = 'none';
             document.body.style.overflow = 'auto';
@@ -518,21 +518,21 @@ function initQuranExplorer() {
 }
 
 // Global function exposed for HTML onclick
-window.loadJuz = async function(juzNumber) {
+window.loadJuz = async function (juzNumber) {
     const overlay = document.getElementById('quran-reader-overlay');
     const content = document.getElementById('reader-content');
     const label = document.getElementById('reader-juz-label');
-    
+
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
     label.textContent = `PARA ${juzNumber.toString().padStart(2, '0')}`;
     content.innerHTML = `<div id="reader-loading" style="text-align: center; padding: 5rem 0;"><div class="loader-bar" style="margin: 0 auto 1.5rem;"><div class="loader-progress"></div></div><p style="color: var(--text-muted);">Retrieving Divine Data...</p></div>`;
 
     try {
-        // Fetch Arabic, Urdu, and English in parallel
+        // Fetch Arabic and English from API, Urdu from local data
         const [arRes, urRes, enRes] = await Promise.all([
             fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/quran-uthmani`),
-            fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/ur.ahmedali`),
+            fetch(`data/nazar/juz-${juzNumber}.json`),
             fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}/en.sahih`)
         ]);
 
@@ -540,7 +540,7 @@ window.loadJuz = async function(juzNumber) {
         const ur = await urRes.json();
         const en = await enRes.json();
 
-        if(ar.code === 200) {
+        if (ar.code === 200 && ur.code === 200) {
             const ayahs = ar.data.ayahs;
             const urAyahs = ur.data.ayahs;
             const enAyahs = en.data.ayahs;
@@ -620,7 +620,7 @@ function animateStats() {
 function initMobileMenu() {
     const menuBtn = document.getElementById('mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
-    
+
     if (menuBtn && navLinks) {
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
