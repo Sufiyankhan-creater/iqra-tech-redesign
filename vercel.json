@@ -1,0 +1,42 @@
+{
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/academy.html",
+      "destination": "/academy",
+      "permanent": true
+    },
+    {
+      "source": "/quran.html",
+      "destination": "/quran",
+      "permanent": true
+    },
+    {
+      "source": "/dictionary.html",
+      "destination": "/dictionary",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/academy",
+      "destination": "/academy.html"
+    },
+    {
+      "source": "/quran",
+      "destination": "/quran.html"
+    },
+    {
+      "source": "/dictionary",
+      "destination": "/dictionary.html"
+    }
+  ]
+}
