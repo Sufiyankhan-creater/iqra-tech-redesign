@@ -46,15 +46,31 @@
         <div class="container">
             <div class="subtitle-badge" style="margin-bottom: 1rem;">Divine Wisdom</div>
             <h1 style="font-size: 3.5rem; margin-bottom: 0.5rem; color: #fff; text-transform: uppercase;">Explore the <span>Holy Quran</span></h1>
-            <p style="color: var(--text-muted); font-size: 1.1rem;">Navigate the revelation through the 30 Paras (Juz)</p>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Navigate the revelation through Paras (Juz) or Surahs</p>
         </div>
     </section>
 
-    <!-- Content Area: Para (Juz) Grid -->
+    <!-- Quran Navigation Tabs -->
+    <section class="quran-tabs" style="margin-top: -2rem; margin-bottom: 2rem; position: relative; z-index: 10;">
+        <div class="container" style="display: flex; justify-content: center;">
+            <div class="tab-toggle-container glass-card" style="display: flex; background: rgba(5,5,10,0.6); padding: 0.5rem; border-radius: 50px;">
+                <button id="tab-parah" class="btn active-tab" style="padding: 0.8rem 2rem; border-radius: 50px; border: none; background: var(--accent-gold); color: #000; font-weight: 600; cursor: pointer; transition: 0.3s;">By Parah</button>
+                <button id="tab-surah" class="btn" style="padding: 0.8rem 2rem; border-radius: 50px; border: none; background: transparent; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s;">By Surah</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Area: Grids -->
     <section class="quran-content" style="padding-bottom: 100px;">
         <div class="container">
+            <!-- Parah Grid -->
             <div class="academy-word-grid" id="juz-selection-grid">
-                <!-- Generating 30 Para cards via JS or manually for high performance -->
+                <!-- Generating 30 Para cards via JS -->
+            </div>
+            
+            <!-- Surah Grid (Hidden by default) -->
+            <div class="academy-word-grid" id="surah-selection-grid" style="display: none;">
+                <!-- Generating 114 Surah cards via JS -->
             </div>
         </div>
     </section>
@@ -94,29 +110,40 @@
         </div>
     </footer>
 
+    <!-- Grammar Modal (Islam360 Style) -->
+    <div id="grammar-modal" class="grammar-modal-overlay" style="display: none;">
+        <div class="grammar-modal-content glass-card">
+            <button id="close-grammar-modal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+            <div class="grammar-header">
+                <div id="grammar-arabic" class="grammar-arabic-text">الْحَمْدُ</div>
+                <div id="grammar-translit" class="grammar-translit-text">al-hamdu</div>
+            </div>
+            
+            <div class="grammar-details-grid">
+                <div class="grammar-box">
+                    <span class="grammar-label">Root Word</span>
+                    <span id="grammar-root" class="grammar-value arabic-root">ح م د</span>
+                </div>
+                <div class="grammar-box">
+                    <span class="grammar-label">Syntax (Grammar)</span>
+                    <span id="grammar-syntax" class="grammar-value">Noun (Ism)</span>
+                </div>
+            </div>
+
+            <div class="grammar-translations">
+                <div class="g-trans-item">
+                    <span class="lang-label">Urdu</span>
+                    <div id="grammar-urdu" class="trans-text urdu-font">سب تعریفیں</div>
+                </div>
+                <div class="g-trans-item">
+                    <span class="lang-label">English</span>
+                    <div id="grammar-english" class="trans-text">All praise</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="script.js"></script>
-    <script>
-        // Inline script to populate the grid quickly, logic in main script.js for reader
-        document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('juz-selection-grid');
-            if(!grid) return;
-            
-            for(let i=1; i<=30; i++) {
-                const card = document.createElement('div');
-                card.className = 'word-card glass-card juz-card';
-                card.style.cursor = 'pointer';
-                card.setAttribute('data-juz', i);
-                card.innerHTML = `
-                    <div style="font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 1rem; letter-spacing: 2px;">JUZ 0${i.toString().padStart(2, '0').slice(-2)}</div>
-                    <div class="word-arabic" style="font-size: 2.5rem;">الجزء ${i}</div>
-                    <div style="color: #fff; font-weight: 600; font-size: 1.1rem; margin-top: 1rem;">Para ${i}</div>
-                    <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">Read with Urdu & Eng</p>
-                `;
-                card.onclick = () => window.loadJuz(i);
-                grid.appendChild(card);
-            }
-        });
-    </script>
 </body>
 </html>
