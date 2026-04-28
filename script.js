@@ -617,13 +617,20 @@ window.loadQuranContent = async function (id, type, surahName = '') {
 
     try {
         // Fetch Word-by-Word data from Quran.com API v4
-        // language=ur for word-by-word Urdu, translations=97,131 for full verse Urdu & English
+        // Fetch both Urdu and English in parallel to support the Grammar Modal
         const apiPath = type === 'juz' ? `by_juz/${id}` : `by_chapter/${id}`;
-        const wbwRes = await fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97,131&word_fields=text_uthmani,translation,transliteration&per_page=50`);
-        const wbwData = await wbwRes.json();
         
-        if (wbwData.verses) {
-            const ayahs = wbwData.verses;
+        const [wbwResUr, wbwResEn] = await Promise.all([
+            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97,131&word_fields=text_uthmani,translation,transliteration&per_page=50`),
+            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=en&word_fields=translation&per_page=50`)
+        ]);
+        
+        const wbwDataUr = await wbwResUr.json();
+        const wbwDataEn = await wbwResEn.json();
+        
+        if (wbwDataUr.verses && wbwDataEn.verses) {
+            const ayahs = wbwDataUr.verses;
+            const ayahsEn = wbwDataEn.verses;
 
             content.innerHTML = `<div class="quran-reader-container">` + ayahs.map((ayah, i) => {
                 // Combine word uthmani texts to get the full verse text
@@ -649,15 +656,18 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                     
                     <!-- Islam360 Style: Word-by-Word Grid -->
                     <div class="wbw-container" style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.05);">
-                        ${ayah.words.map(w => {
+                        ${ayah.words.map((w, wIndex) => {
                             if(w.char_type_name !== 'word') return '';
+                            
+                            const wEn = ayahsEn[i].words[wIndex];
                             
                             const arabic = w.text_uthmani.replace(/'/g, "\\'");
                             const transUr = w.translation.text.replace(/'/g, "\\'");
+                            const transEn = (wEn && wEn.translation && wEn.translation.text) ? wEn.translation.text.replace(/'/g, "\\'") : '';
                             const translit = (w.transliteration && w.transliteration.text) ? w.transliteration.text.replace(/'/g, "\\'") : '';
                             
                             return `
-                            <div class="wbw-word" onclick="openGrammarModal('${arabic}', '${translit}', 'Not Available in Urdu API', '${transUr}', '')">
+                            <div class="wbw-word" onclick="openGrammarModal('${arabic}', '${translit}', '${transEn}', '${transUr}', '')">
                                 <span class="wbw-arabic">${w.text_uthmani}</span>
                                 <span class="wbw-translit">${translit}</span>
                                 <span class="wbw-trans urdu-font" style="font-size: 1.2rem; color: #fff;">${w.translation.text}</span>
