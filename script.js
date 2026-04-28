@@ -619,13 +619,13 @@ window.loadQuranContent = async function (id, type, surahName = '') {
         // Fetch Word-by-Word data from Quran.com API v4
         // language=ur for word-by-word Urdu, translations=97,131 for full verse Urdu & English
         const apiPath = type === 'juz' ? `by_juz/${id}` : `by_chapter/${id}`;
-        const wbwRes = await fetch(\`https://api.quran.com/api/v4/verses/\${apiPath}?words=true&language=ur&translations=97,131&word_fields=text_uthmani,translation,transliteration&per_page=50\`);
+        const wbwRes = await fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97,131&word_fields=text_uthmani,translation,transliteration&per_page=50`);
         const wbwData = await wbwRes.json();
         
         if (wbwData.verses) {
             const ayahs = wbwData.verses;
 
-            content.innerHTML = \`<div class="quran-reader-container">\` + ayahs.map((ayah, i) => {
+            content.innerHTML = `<div class="quran-reader-container">` + ayahs.map((ayah, i) => {
                 // Combine word uthmani texts to get the full verse text
                 const fullArabicVerse = ayah.words.filter(w => w.char_type_name === 'word').map(w => w.text_uthmani).join(' ') + ' ' + (ayah.words.find(w => w.char_type_name === 'end') ? ayah.words.find(w => w.char_type_name === 'end').text_uthmani : '');
                 
@@ -633,36 +633,36 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                 const urduFull = ayah.translations.find(t => t.resource_id === 97)?.text || '';
                 const engFull = ayah.translations.find(t => t.resource_id === 131)?.text || '';
 
-                return \`
-                <div class="reader-ayat-card reveal-ayat" style="animation-delay: \${i * 0.1}s; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
+                return `
+                <div class="reader-ayat-card reveal-ayat" style="animation-delay: ${i * 0.1}s; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
                     <div class="ayat-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <span class="ayat-label" style="background: rgba(240, 189, 90, 0.1); color: var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 5px;">AYAH \${ayah.verse_key}</span>
-                        <div class="divider-badge" onclick="speakArabic('', '\${ayah.verse_key.split(':')[1]}')" style="cursor:pointer; color:var(--accent-teal); font-size: 0.8rem; border: 1px solid var(--accent-teal); padding: 0.3rem 0.8rem; border-radius: 50px;">
+                        <span class="ayat-label" style="background: rgba(240, 189, 90, 0.1); color: var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 5px;">AYAH ${ayah.verse_key}</span>
+                        <div class="divider-badge" onclick="speakArabic('', '${ayah.verse_key.split(':')[1]}')" style="cursor:pointer; color:var(--accent-teal); font-size: 0.8rem; border: 1px solid var(--accent-teal); padding: 0.3rem 0.8rem; border-radius: 50px;">
                             <i class="fas fa-play" style="margin-right: 5px;"></i> Play Audio
                         </div>
                     </div>
                     
                     <!-- Islam360 Style: Full Arabic Verse on Top -->
                     <div class="arabic-focal" style="text-align: right; margin-bottom: 2rem; line-height: 1.8;">
-                        \${fullArabicVerse}
+                        ${fullArabicVerse}
                     </div>
                     
                     <!-- Islam360 Style: Word-by-Word Grid -->
                     <div class="wbw-container" style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.05);">
-                        \${ayah.words.map(w => {
+                        ${ayah.words.map(w => {
                             if(w.char_type_name !== 'word') return '';
                             
-                            const arabic = w.text_uthmani.replace(/'/g, "\\\\'");
-                            const transUr = w.translation.text.replace(/'/g, "\\\\'");
-                            const translit = (w.transliteration && w.transliteration.text) ? w.transliteration.text.replace(/'/g, "\\\\'") : '';
+                            const arabic = w.text_uthmani.replace(/'/g, "\\'");
+                            const transUr = w.translation.text.replace(/'/g, "\\'");
+                            const translit = (w.transliteration && w.transliteration.text) ? w.transliteration.text.replace(/'/g, "\\'") : '';
                             
-                            return \`
-                            <div class="wbw-word" onclick="openGrammarModal('\${arabic}', '\${translit}', 'Not Available in Urdu API', '\${transUr}', '')">
-                                <span class="wbw-arabic">\${w.text_uthmani}</span>
-                                <span class="wbw-translit">\${translit}</span>
-                                <span class="wbw-trans urdu-font" style="font-size: 1.2rem; color: #fff;">\${w.translation.text}</span>
+                            return `
+                            <div class="wbw-word" onclick="openGrammarModal('${arabic}', '${translit}', 'Not Available in Urdu API', '${transUr}', '')">
+                                <span class="wbw-arabic">${w.text_uthmani}</span>
+                                <span class="wbw-translit">${translit}</span>
+                                <span class="wbw-trans urdu-font" style="font-size: 1.2rem; color: #fff;">${w.translation.text}</span>
                             </div>
-                            \`;
+                            `;
                         }).join('')}
                     </div>
                     
@@ -670,20 +670,20 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                     <div class="translation-group" style="margin-top: 2rem;">
                         <div class="reader-trans-item">
                             <span class="trans-lang-label" style="color: var(--accent-gold);"><i class="fas fa-language"></i> Urdu Translation</span>
-                            <div class="trans-text-main urdu-font-reader" style="font-size: 1.4rem; color: #f5f5f7; margin-top: 0.5rem; text-align: right;">\${urduFull}</div>
+                            <div class="trans-text-main urdu-font-reader" style="font-size: 1.4rem; color: #f5f5f7; margin-top: 0.5rem; text-align: right;">${urduFull}</div>
                         </div>
                         
                         <div class="reader-trans-item" style="margin-top: 1.5rem;">
                             <span class="trans-lang-label" style="color: var(--accent-gold);"><i class="fas fa-globe"></i> English Translation</span>
-                            <div class="trans-text-main" style="color: var(--text-muted); margin-top: 0.5rem;">\${engFull}</div>
+                            <div class="trans-text-main" style="color: var(--text-muted); margin-top: 0.5rem;">${engFull}</div>
                         </div>
                     </div>
                 </div>
-            \`}).join('') + \`</div>\`;
+            `}).join('') + `</div>`;
         }
     } catch (err) {
         console.error("Full Error:", err);
-        content.innerHTML = \`<p style="text-align: center; color: #ff5555;">Transmission Error: \${err.message || err.toString()}</p>\`;
+        content.innerHTML = `<p style="text-align: center; color: #ff5555;">Transmission Error: ${err.message || err.toString()}</p>`;
     }
 }
 
