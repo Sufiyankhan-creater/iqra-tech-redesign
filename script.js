@@ -39,11 +39,11 @@ let audioSettings = {
     currentAudio: null
 };
 const categoryInfo = {
-    'huruf-e-jar': { step1: 'STEP 1: DISCOVER', step2: 'STEP 2: APPLY', step3: 'STEP 3: MASTER', title: 'Huruf-e-Jar', desc: 'Prepositions that influence the case of the following noun.' },
-    'attached-pronouns': { step1: 'STEP 1: IDENTIFY', step2: 'STEP 2: CONTEXT', step3: 'STEP 3: MASTER', title: 'Attached Pronouns', desc: 'Suffixes denoting ownership or object status.' },
-    'detached-pronouns': { step1: 'STEP 1: RECOGNIZE', step2: 'STEP 2: SUBJECTS', step3: 'STEP 3: MASTER', title: 'Detached Pronouns', desc: 'Independent pronouns used as sentence subjects.' },
-    'past-tense': { step1: 'STEP 1: ACTION', step2: 'STEP 2: NARRATIVE', step3: 'STEP 3: MASTER', title: "Past Tense", desc: 'Completed actions in sacred history.' },
-    'universal-tense': { step1: 'STEP 1: PROGRESSION', step2: 'STEP 2: REALITY', step3: 'STEP 3: MASTER', title: "Universal Tense", desc: 'Ongoing, present, or future actions.' }
+    'huruf-e-jar': { step1: 'STEP 1: DISCOVER & APPLY', step2: 'STEP 2: MASTER', title: 'Huruf-e-Jar', desc: 'Prepositions that influence the case of the following noun.' },
+    'attached-pronouns': { step1: 'STEP 1: DISCOVER & APPLY', step2: 'STEP 2: MASTER', title: 'Attached Pronouns', desc: 'Suffixes denoting ownership or object status.' },
+    'detached-pronouns': { step1: 'STEP 1: DISCOVER & APPLY', step2: 'STEP 2: MASTER', title: 'Detached Pronouns', desc: 'Independent pronouns used as sentence subjects.' },
+    'past-tense': { step1: 'STEP 1: DISCOVER & APPLY', step2: 'STEP 2: MASTER', title: "Past Tense", desc: 'Completed actions in sacred history.' },
+    'universal-tense': { step1: 'STEP 1: DISCOVER & APPLY', step2: 'STEP 2: MASTER', title: "Universal Tense", desc: 'Ongoing, present, or future actions.' }
 };
 
 // ─── Core Initialization ───────────────────────────────────────────────────
@@ -201,9 +201,7 @@ function initAcademy() {
 
     document.getElementById('academy-next-btn')?.addEventListener('click', () => {
         if (academyState.step === 1) {
-            academyState.step = 2; renderAcademy(); window.scrollTo({ top: 300, behavior: 'smooth' });
-        } else if (academyState.step === 2) {
-            academyState.step = 3; academyState.quizIndex = 0; renderAcademy(); window.scrollTo({ top: 300, behavior: 'smooth' });
+            academyState.step = 2; academyState.quizIndex = 0; renderAcademy(); window.scrollTo({ top: 300, behavior: 'smooth' });
         } else {
             const data = grammarData[academyState.category];
             if (academyState.quizIndex < data.exercises.length - 1) {
@@ -239,8 +237,7 @@ function renderAcademy() {
 
     const badge = document.getElementById('academy-step-badge');
     if (academyState.step === 1) badge.innerHTML = `<i class="fas fa-bolt"></i> ${info.step1}`;
-    else if (academyState.step === 2) badge.innerHTML = `<i class="fas fa-bolt"></i> ${info.step2}`;
-    else badge.innerHTML = `<i class="fas fa-certificate"></i> ${info.step3}`;
+    else badge.innerHTML = `<i class="fas fa-certificate"></i> ${info.step2}`;
 
     document.getElementById('academy-title').textContent = info.title;
     document.getElementById('academy-desc').textContent = info.desc;
@@ -248,29 +245,30 @@ function renderAcademy() {
 
     if (academyState.step === 1) {
         grid.style.display = 'grid'; examplesGrid.style.display = 'none'; quizContainer.style.display = 'none';
-        document.getElementById('academy-next-btn').textContent = 'Next: Examples';
+        document.getElementById('academy-next-btn').textContent = 'Next: Exercises';
         document.getElementById('academy-prev-btn').style.display = 'none';
 
-        grid.innerHTML = data.words.map(w => `
-            <div class="word-card glass-card">
-                <div class="word-arabic">${w.arabic}</div>
-                <div class="word-translations">
-                    <div class="trans-item"><span class="label">URDU</span><span class="urdu-text">${w.urdu}</span></div>
-                    <div class="trans-item"><span class="label">ENG</span><span class="eng-text">${w.english}</span></div>
+        grid.className = 'combined-academy-grid';
+        grid.innerHTML = data.items.map(item => `
+            <div class="combined-academy-card glass-card">
+                <div class="card-example">
+                    ${item.example.image ? `<img src="${item.example.image}" alt="" onerror="this.style.display='none'" class="example-image" />` : ''}
+                    <div class="example-arabic">
+                        ${item.example.arabic}
+                    </div>
+                    <div class="example-translations">
+                        <div class="example-trans-item"><div class="lang-label">URDU</div><div class="trans-text urdu-font">${item.example.urdu}</div></div>
+                        <div class="example-trans-item"><div class="lang-label">ENG</div><div class="trans-text">${item.example.english}</div></div>
+                    </div>
                 </div>
-            </div>`).join('');
-
-    } else if (academyState.step === 2) {
-        grid.style.display = 'none'; examplesGrid.style.display = 'block'; quizContainer.style.display = 'none';
-        document.getElementById('academy-next-btn').textContent = 'Next: Exercises';
-        document.getElementById('academy-prev-btn').style.display = 'inline-block';
-
-        examplesGrid.innerHTML = data.examples.map(ex => `
-            <div class="academy-example-card">
-                <div class="example-arabic">${ex.arabic}</div>
-                <div class="example-translations">
-                    <div class="example-trans-item"><div class="lang-label">URDU</div><div class="trans-text urdu-font">${ex.urdu}</div></div>
-                    <div class="example-trans-item"><div class="lang-label">ENG</div><div class="trans-text">${ex.english}</div></div>
+                <div class="card-word">
+                    <div class="word-arabic">
+                        ${item.word.arabic}
+                    </div>
+                    <div class="word-translations">
+                        <div class="trans-item"><span class="label">URDU</span><span class="urdu-text">${item.word.urdu}</span></div>
+                        <div class="trans-item"><span class="label">ENG</span><span class="eng-text">${item.word.english}</span></div>
+                    </div>
                 </div>
             </div>`).join('');
 
@@ -413,8 +411,23 @@ window.speakArabic = function (text, ayahNumber, iconEl) {
 };
 
 // processTTS: reads the EXACT text passed — no full ayah, no CDN
-// Waits for voices if they haven't loaded yet (fixes silent output on first click)
 function processTTS(text, iconEl) {
+    // 1. Try ResponsiveVoice first (works everywhere, no local voice packs needed)
+    if (typeof responsiveVoice !== 'undefined' && responsiveVoice.isPlaying !== undefined) {
+        if (responsiveVoice.isPlaying()) responsiveVoice.cancel();
+        
+        responsiveVoice.speak(text, "Arabic Male", {
+            pitch: 1,
+            rate: 1,
+            volume: 1,
+            onstart: () => { if (iconEl) iconEl.classList.add('voice-playing'); },
+            onend: () => { if (iconEl) iconEl.classList.remove('voice-playing'); },
+            onerror: () => { if (iconEl) iconEl.classList.remove('voice-playing'); }
+        });
+        return;
+    }
+
+    // 2. Fallback to native SpeechSynthesis
     if (!('speechSynthesis' in window)) {
         if (iconEl) iconEl.classList.remove('voice-playing');
         return;
@@ -427,15 +440,15 @@ function processTTS(text, iconEl) {
         utterance.rate = 0.72;
         utterance.pitch = 0.95;
         utterance.volume = 1;
-        // Try to assign an Arabic voice
         if (!_arabicVoice) _loadArabicVoice();
         if (_arabicVoice) utterance.voice = _arabicVoice;
+        
+        utterance.onstart = () => { if (iconEl) iconEl.classList.add('voice-playing'); };
         utterance.onend = () => { if (iconEl) iconEl.classList.remove('voice-playing'); };
         utterance.onerror = () => { if (iconEl) iconEl.classList.remove('voice-playing'); };
         window.speechSynthesis.speak(utterance);
     };
 
-    // If voices haven't loaded yet, wait for them then speak
     if (window.speechSynthesis.getVoices().length === 0) {
         window.speechSynthesis.addEventListener('voiceschanged', () => {
             _loadArabicVoice();
@@ -644,7 +657,7 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                 <div class="reader-ayat-card reveal-ayat" style="animation-delay: ${i * 0.1}s; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
                     <div class="ayat-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                         <span class="ayat-label" style="background: rgba(240, 189, 90, 0.1); color: var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 5px;">AYAH ${ayah.verse_key}</span>
-                        <div class="divider-badge" onclick="speakArabic('', '${ayah.verse_key.split(':')[1]}')" style="cursor:pointer; color:var(--accent-teal); font-size: 0.8rem; border: 1px solid var(--accent-teal); padding: 0.3rem 0.8rem; border-radius: 50px;">
+                        <div class="divider-badge" onclick="speakArabic(decodeURIComponent('${encodeURIComponent(fullArabicVerse)}'), null, this)" style="cursor:pointer; color:var(--accent-teal); font-size: 0.8rem; border: 1px solid var(--accent-teal); padding: 0.3rem 0.8rem; border-radius: 50px;">
                             <i class="fas fa-play" style="margin-right: 5px;"></i> Play Audio
                         </div>
                     </div>
@@ -661,16 +674,21 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                             
                             const wEn = ayahsEn[i].words[wIndex];
                             
-                            const arabic = w.text_uthmani.replace(/'/g, "\\'");
-                            const transUr = w.translation.text.replace(/'/g, "\\'");
-                            const transEn = (wEn && wEn.translation && wEn.translation.text) ? wEn.translation.text.replace(/'/g, "\\'") : '';
-                            const translit = (w.transliteration && w.transliteration.text) ? w.transliteration.text.replace(/'/g, "\\'") : '';
+                            const arabicText = w.text_uthmani || '';
+                            const transUrText = w.translation ? w.translation.text : '';
+                            const transEnText = (wEn && wEn.translation && wEn.translation.text) ? wEn.translation.text : '';
+                            const translitText = (w.transliteration && w.transliteration.text) ? w.transliteration.text : '';
+                            
+                            const arabic = arabicText.replace(/'/g, "\\'");
+                            const transUr = transUrText.replace(/'/g, "\\'");
+                            const transEn = transEnText.replace(/'/g, "\\'");
+                            const translit = translitText.replace(/'/g, "\\'");
                             
                             return `
                             <div class="wbw-word" onclick="openGrammarModal('${arabic}', '${translit}', '${transEn}', '${transUr}', '')">
-                                <span class="wbw-arabic">${w.text_uthmani}</span>
-                                <span class="wbw-translit">${translit}</span>
-                                <span class="wbw-trans urdu-font" style="font-size: 1.2rem; color: #fff;">${w.translation.text}</span>
+                                <span class="wbw-arabic">${arabicText}</span>
+                                <span class="wbw-translit">${translitText}</span>
+                                <span class="wbw-trans urdu-font" style="font-size: 1.2rem; color: #fff;">${transUrText}</span>
                             </div>
                             `;
                         }).join('')}

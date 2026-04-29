@@ -1,40 +1,51 @@
 const grammarData = {
     "huruf-e-jar": {
         rule: "Particles that connect nouns, causing the following word to enter the Genetive (Majroor) case, usually ending with a Kasra.",
-        words: [
-            { "arabic": "مِنْ",   "urdu": "سے",              "english": "From",       "ayah": 6236 },
-            { "arabic": "إِلَى",  "urdu": "طرف",             "english": "To",         "ayah": 6114 },
-            { "arabic": "عَلَى",  "urdu": "اوپر",            "english": "On",         "ayah": 7    },
-            { "arabic": "فِي",    "urdu": "میں",             "english": "In",         "ayah": 9    },
-            { "arabic": "بِ",     "urdu": "ساتھ",            "english": "With / By",  "ayah": 1    },
-            { "arabic": "لِ",     "urdu": "لئے",             "english": "For",        "ayah": 2    },
-            { "arabic": "عَنْ",   "urdu": "سے / متعلق",      "english": "About / From","ayah": 6202 },
-            { "arabic": "كَ",     "urdu": "جیسا",            "english": "Like",       "ayah": 6161 },
-            { "arabic": "حَتَّى", "urdu": "یہاں تک کہ",     "english": "Until",      "ayah": 6130 },
-            { "arabic": "و",      "urdu": "قسم ہے",          "english": "By (Oath)",  "ayah": 6099 },
-            { "arabic": "ت",      "urdu": "قسم ہے",          "english": "By (Oath)",  "ayah": 6099 }
-        ],
-        examples: [
-            { "arabic": "بِسْمِ اللَّهِ",             "urdu": "اللہ کے نام کے ساتھ",               "english": "With the name of Allah",          "ayah": 1    },
-            { "arabic": "فِي الدِّينِ",               "urdu": "دین میں",                           "english": "In the religion",                 "ayah": 263  },
-            { "arabic": "إِلَى صِرَاطٍ مُّسْتَقِيمٍ","urdu": "سیدھے راستے کی طرف",              "english": "To a straight path",              "ayah": 6    },
-            { "arabic": "عَلَى الْعَرْشِ",           "urdu": "عرش پر",                            "english": "On the Throne",                   "ayah": 2353 },
-            { "arabic": "مِنَ النَّاسِ",              "urdu": "لوگوں میں سے",                      "english": "From among the people",           "ayah": 6236 },
-            { "arabic": "الْحَمْدُ لِلَّهِ",         "urdu": "تمام تعریف اللہ کے لیے ہے",         "english": "All praise is for Allah",          "ayah": 2    },
-            { "arabic": "عَنِ الصَّلَاةِ",           "urdu": "نماز سے",                           "english": "From/About the prayer",           "ayah": 6202 },
-            { "arabic": "كَالْعَهْنِ الْمَنفُوشِ",  "urdu": "دھنی ہوئی اون کی طرح",              "english": "Like carded wool",                "ayah": 6162 },
-            { "arabic": "حَتَّى مَطْلَعِ الْفَجْرِ","urdu": "فجر کے طلوع ہونے تک",               "english": "Until the emergence of dawn",     "ayah": 6130 },
-            { "arabic": "وَالتِّينِ وَالزَّيْتُونِ", "urdu": "انجیر اور زیتون کی قسم",           "english": "By the fig and the olive",        "ayah": 6099 },
-            { "arabic": "بِالْحَقِّ",                 "urdu": "حق کے ساتھ",                        "english": "With the truth",                  "ayah": 2110 },
-            { "arabic": "فِي الْأَرْضِ",              "urdu": "زمین میں",                          "english": "In the earth",                    "ayah": 18   },
-            { "arabic": "إِلَى رَبِّكَ",              "urdu": "اپنے رب کی طرف",                    "english": "To your Lord",                    "ayah": 5890 },
-            { "arabic": "عَلَى قُلُوبِهِمْ",         "urdu": "ان کے دلوں پر",                      "english": "Upon their hearts",               "ayah": 14   },
-            { "arabic": "لِأُولِي الْأَلْبَابِ",     "urdu": "عقل والوں کے لیے",                   "english": "For people of understanding",     "ayah": 300  },
-            { "arabic": "مِنَ الْمُسْلِمِينَ",       "urdu": "مسلمانوں میں سے",                    "english": "From among the Muslims",          "ayah": 360  },
-            { "arabic": "عَنِ النَّعِيمِ",            "urdu": "نعمتوں کے بارے میں",                "english": "About the pleasures/blessings",   "ayah": 6176 },
-            { "arabic": "كَالْفَرَاشِ الْمَبْثُوثِ","urdu": "بکھرے ہوئے پتنگوں کی طرح",          "english": "Like dispersed moths",            "ayah": 6161 },
-            { "arabic": "إِلَى النُّورِ",             "urdu": "نور کی طرف",                        "english": "To the light",                    "ayah": 5228 },
-            { "arabic": "فِي جَنَّاتٍ",               "urdu": "جنتوں میں",                         "english": "In gardens",                      "ayah": 4991 }
+        items: [
+            {
+                word: { "arabic": "مِنْ", "urdu": "سے", "english": "From", "ayah": 6236 },
+                example: { "arabic": "مِنَ النَّاسِ", "urdu": "لوگوں میں سے", "english": "From among the people", "ayah": 6236 }
+            },
+            {
+                word: { "arabic": "إِلَى", "urdu": "طرف", "english": "To", "ayah": 6114 },
+                example: { "arabic": "إِلَى صِرَاطٍ مُّسْتَقِيمٍ", "urdu": "سیدھے راستے کی طرف", "english": "To a straight path", "ayah": 6 }
+            },
+            {
+                word: { "arabic": "عَلَى", "urdu": "اوپر", "english": "On", "ayah": 7 },
+                example: { "arabic": "عَلَى الْعَرْشِ", "urdu": "عرش پر", "english": "On the Throne", "ayah": 2353 }
+            },
+            {
+                word: { "arabic": "فِي", "urdu": "میں", "english": "In", "ayah": 9 },
+                example: { "arabic": "فِي الدِّينِ", "urdu": "دین میں", "english": "In the religion", "ayah": 263 }
+            },
+            {
+                word: { "arabic": "بِ", "urdu": "ساتھ", "english": "With / By", "ayah": 1 },
+                example: { "arabic": "بِسْمِ اللَّهِ", "urdu": "اللہ کے نام کے ساتھ", "english": "With the name of Allah", "ayah": 1, "image": "assets/bismillah.png" }
+            },
+            {
+                word: { "arabic": "لِ", "urdu": "لئے", "english": "For", "ayah": 2 },
+                example: { "arabic": "الْحَمْدُ لِلَّهِ", "urdu": "تمام تعریف اللہ کے لیے ہے", "english": "All praise is for Allah", "ayah": 2 }
+            },
+            {
+                word: { "arabic": "عَنْ", "urdu": "سے / متعلق", "english": "About / From", "ayah": 6202 },
+                example: { "arabic": "عَنِ الصَّلَاةِ", "urdu": "نماز سے", "english": "From/About the prayer", "ayah": 6202 }
+            },
+            {
+                word: { "arabic": "كَ", "urdu": "جیسا", "english": "Like", "ayah": 6161 },
+                example: { "arabic": "كَالْعَهْنِ الْمَنفُوشِ", "urdu": "دھنی ہوئی اون کی طرح", "english": "Like carded wool", "ayah": 6162 }
+            },
+            {
+                word: { "arabic": "حَتَّى", "urdu": "یہاں تک کہ", "english": "Until", "ayah": 6130 },
+                example: { "arabic": "حَتَّى مَطْلَعِ الْفَجْرِ", "urdu": "فجر کے طلوع ہونے تک", "english": "Until the emergence of dawn", "ayah": 6130 }
+            },
+            {
+                word: { "arabic": "و", "urdu": "قسم ہے", "english": "By (Oath)", "ayah": 6099 },
+                example: { "arabic": "وَالتِّينِ وَالزَّيْتُونِ", "urdu": "انجیر اور زیتون کی قسم", "english": "By the fig and the olive", "ayah": 6099 }
+            },
+            {
+                word: { "arabic": "ت", "urdu": "قسم ہے", "english": "By (Oath)", "ayah": 6099 },
+                example: { "arabic": "تَاللَّهِ", "urdu": "اللہ کی قسم", "english": "By Allah", "ayah": 1667 }
+            }
         ],
         exercises: [
             { type: "fill",  question: "______ اللَّهِ (With the name of Allah)",        options: ["بِ","فِي","عَلَى"],          answer: "بِ"    },
@@ -52,37 +63,39 @@ const grammarData = {
     },
     "attached-pronouns": {
         rule: "Pronoun suffixes attached to nouns (showing ownership), verbs (as objects), or prepositions.",
-        words: [
-            { "arabic": "هُ",   "urdu": "اس کا",         "english": "his / him",     "ayah": 6222 },
-            { "arabic": "هُمَا","urdu": "ان دونوں کا",   "english": "their (dual)",  "ayah": 2    },
-            { "arabic": "هُمْ", "urdu": "ان سب کا",      "english": "their",         "ayah": 12   },
-            { "arabic": "هَا",  "urdu": "اس ایک عورت کا","english": "her / hers",   "ayah": 6140 },
-            { "arabic": "ي",    "urdu": "میرا / مجھے",   "english": "my / me",       "ayah": 5    },
-            { "arabic": "نَا",  "urdu": "ہمارا / ہمیں",  "english": "our / us",      "ayah": 5    },
-            { "arabic": "كَ",   "urdu": "آپ کا",          "english": "your (M)",      "ayah": 6209 },
-            { "arabic": "كُمْ", "urdu": "آپ سب کا",      "english": "your (Plural)", "ayah": 190  }
-        ],
-        examples: [
-            { "arabic": "رَبِّي",          "urdu": "میرا رب",                  "english": "My Lord",          "ayah": 5890 },
-            { "arabic": "كِتَابُهُ",       "urdu": "اس کی کتاب",              "english": "His book",         "ayah": 9    },
-            { "arabic": "عَلَيْكُمْ",      "urdu": "تم پر",                    "english": "Upon you (all)",   "ayah": 7    },
-            { "arabic": "نَصَرَهُمْ",      "urdu": "اس نے ان کی مدد کی",       "english": "He helped them",   "ayah": 3374 },
-            { "arabic": "رَسُولُنَا",      "urdu": "ہمارا رسول",               "english": "Our Messenger",    "ayah": 4    },
-            { "arabic": "فِيهِ",           "urdu": "اس میں",                   "english": "In it/him",        "ayah": 9    },
-            { "arabic": "عَلَيْهِ",        "urdu": "اس پر",                    "english": "Upon him",         "ayah": 7    },
-            { "arabic": "لَهَا",           "urdu": "اس (عورت) کے لیے",         "english": "For her",          "ayah": 2    },
-            { "arabic": "بَيْنَهُمْ",      "urdu": "ان کے درمیان",             "english": "Between them",     "ayah": 12   },
-            { "arabic": "نُصْرَتُكَ",      "urdu": "آپ کی مدد",                "english": "Your help",        "ayah": 6209 },
-            { "arabic": "آيَاتِهِ",        "urdu": "اس کی نشانیاں",            "english": "His signs",        "ayah": 6222 },
-            { "arabic": "رَبُّكُمْ",       "urdu": "تمہارا رب",                "english": "Your Lord",        "ayah": 190  },
-            { "arabic": "أَعْمَالَنَا",    "urdu": "ہمارے اعمال",              "english": "Our deeds",        "ayah": 5    },
-            { "arabic": "قُلُوبِهِمْ",     "urdu": "ان کے دلوں",               "english": "Their hearts",     "ayah": 14   },
-            { "arabic": "أَهْلِي",         "urdu": "میرے گھر والے",            "english": "My family",        "ayah": 5    },
-            { "arabic": "مَعَكَ",          "urdu": "آپ کے ساتھ",               "english": "With you",         "ayah": 3374 },
-            { "arabic": "بَيْنَنَا",       "urdu": "ہمارے درمیان",             "english": "Between us",       "ayah": 5    },
-            { "arabic": "اِسْمُهُ",        "urdu": "اس کا نام",                "english": "His name",         "ayah": 6222 },
-            { "arabic": "بَيْتِكَ",        "urdu": "تیرا گھر",                 "english": "Your house",       "ayah": 6209 },
-            { "arabic": "صَدْرِي",         "urdu": "میرا سینہ",                "english": "My chest",         "ayah": 5    }
+        items: [
+            {
+                word: { "arabic": "هُ", "urdu": "اس کا", "english": "his / him", "ayah": 6222 },
+                example: { "arabic": "كِتَابُهُ", "urdu": "اس کی کتاب", "english": "His book", "ayah": 9 }
+            },
+            {
+                word: { "arabic": "هُمَا", "urdu": "ان دونوں کا", "english": "their (dual)", "ayah": 2 },
+                example: { "arabic": "بَيْنَهُمَا", "urdu": "ان دونوں کے درمیان", "english": "Between them both", "ayah": 2 }
+            },
+            {
+                word: { "arabic": "هُمْ", "urdu": "ان سب کا", "english": "their", "ayah": 12 },
+                example: { "arabic": "قُلُوبِهِمْ", "urdu": "ان کے دلوں", "english": "Their hearts", "ayah": 14 }
+            },
+            {
+                word: { "arabic": "هَا", "urdu": "اس ایک عورت کا", "english": "her / hers", "ayah": 6140 },
+                example: { "arabic": "لَهَا", "urdu": "اس (عورت) کے لیے", "english": "For her", "ayah": 2 }
+            },
+            {
+                word: { "arabic": "ي", "urdu": "میرا / مجھے", "english": "my / me", "ayah": 5 },
+                example: { "arabic": "رَبِّي", "urdu": "میرا رب", "english": "My Lord", "ayah": 5890 }
+            },
+            {
+                word: { "arabic": "نَا", "urdu": "ہمارا / ہمیں", "english": "our / us", "ayah": 5 },
+                example: { "arabic": "رَسُولُنَا", "urdu": "ہمارا رسول", "english": "Our Messenger", "ayah": 4 }
+            },
+            {
+                word: { "arabic": "كَ", "urdu": "آپ کا", "english": "your (M)", "ayah": 6209 },
+                example: { "arabic": "بَيْتِكَ", "urdu": "تیرا گھر", "english": "Your house", "ayah": 6209 }
+            },
+            {
+                word: { "arabic": "كُمْ", "urdu": "آپ سب کا", "english": "your (Plural)", "ayah": 190 },
+                example: { "arabic": "عَلَيْكُمْ", "urdu": "تم پر", "english": "Upon you (all)", "ayah": 7 }
+            }
         ],
         exercises: [
             { type: "fill",  question: "رَبُّ______ (Our Lord)",                    options: ["كَ","نَا","ي"],    answer: "نَا"  },
@@ -100,37 +113,39 @@ const grammarData = {
     },
     "detached-pronouns": {
         rule: "Independent pronouns used primarily as the subject (Mubtada) of a sentence.",
-        words: [
-            { "arabic": "هُوَ",   "urdu": "وہ",          "english": "He",          "ayah": 6222 },
-            { "arabic": "هُمْ",   "urdu": "وہ سب",       "english": "They",        "ayah": 12   },
-            { "arabic": "أَنْتَ", "urdu": "آپ / تم",     "english": "You",         "ayah": 5    },
-            { "arabic": "أَنْتُمْ","urdu": "آپ سب",      "english": "You (plural)","ayah": 190  },
-            { "arabic": "أَنَا",  "urdu": "میں",          "english": "I",           "ayah": 3282 },
-            { "arabic": "نَحْنُ", "urdu": "ہم",           "english": "We",          "ayah": 1811 },
-            { "arabic": "هِيَ",   "urdu": "وہ (عورت)",   "english": "She",         "ayah": 6225 },
-            { "arabic": "أَنْتِ", "urdu": "آپ (عورت)",   "english": "You (F)",     "ayah": 5    }
-        ],
-        examples: [
-            { "arabic": "هُوَ اللَّهُ",              "urdu": "وہ اللہ ہے",                    "english": "He is Allah",                "ayah": 6222 },
-            { "arabic": "نَحْنُ نَصَرْنَا",          "urdu": "ہم نے مدد کی",                  "english": "We helped",                  "ayah": 1811 },
-            { "arabic": "أَنَا رَبُّكَ",             "urdu": "میں تمہارا رب ہوں",             "english": "I am your Lord",             "ayah": 3282 },
-            { "arabic": "أَنْتُمْ مُسْلِمُونَ",     "urdu": "تم سب مسلمان ہو",               "english": "You all are Muslims",        "ayah": 190  },
-            { "arabic": "هِيَ الْحَقُّ",             "urdu": "وہ حق ہے",                      "english": "It is the Truth",            "ayah": 6225 },
-            { "arabic": "هُمْ يُنْفِقُونَ",          "urdu": "وہ خرچ کرتے ہیں",               "english": "They spend",                 "ayah": 12   },
-            { "arabic": "أَنْتَ الْمَوْلَى",         "urdu": "آپ ہی مولیٰ ہیں",              "english": "You are the Protector",      "ayah": 5    },
-            { "arabic": "هُمَا فِي الْغَارِ",        "urdu": "وہ دونوں غار میں تھے",          "english": "They both were in the cave", "ayah": 2    },
-            { "arabic": "هُنَّ لِبَاسٌ لَّكُمْ",    "urdu": "وہ (عورتیں) تمہارا لباس ہیں",   "english": "They are clothing for you",  "ayah": 190  },
-            { "arabic": "نَحْنُ خَلَقْنَاكُمْ",      "urdu": "ہم نے تمہیں پیدا کیا",          "english": "We created you",             "ayah": 5575 },
-            { "arabic": "هُوَ الرَّحِيمُ",           "urdu": "وہ رحیم ہے",                    "english": "He is the Merciful",         "ayah": 6222 },
-            { "arabic": "أَنَا أَوَّلُ الْمُسْلِمِينَ","urdu": "میں پہلا مسلمان ہوں",       "english": "I am the first of the Muslims","ayah": 3282},
-            { "arabic": "أَنْتُمْ تَكْفُرُونَ",     "urdu": "تم انکار کرتے ہو",              "english": "You all disbelieve",         "ayah": 190  },
-            { "arabic": "هِيَ عَصَايَ",              "urdu": "یہ میری لاٹھی ہے",             "english": "It is my staff",             "ayah": 6225 },
-            { "arabic": "هُمْ يَعْلَمُونَ",          "urdu": "وہ جانتے ہیں",                  "english": "They know",                  "ayah": 12   },
-            { "arabic": "أَنْتَ رَبِّي",             "urdu": "آپ میرے رب ہیں",               "english": "You are my Lord",            "ayah": 5    },
-            { "arabic": "نَحْنُ نَحْيِي وَنُمِيتُ",  "urdu": "ہم ہی زندگی دیتے ہیں",        "english": "We give life and cause death","ayah": 1811 },
-            { "arabic": "هُوَ الَّذِي خَلَقَ",       "urdu": "وہی ہے جس نے پیدا کیا",        "english": "He is the one who created",  "ayah": 6222 },
-            { "arabic": "أَنْتُمْ مُعْرِضُونَ",     "urdu": "تم منہ موڑنے والے ہو",          "english": "You all are turning away",   "ayah": 190  },
-            { "arabic": "هُمُ الْمُفْلِحُونَ",       "urdu": "وہی لوگ کامیاب ہونے والے ہیں","english": "They are the successful ones","ayah": 8   }
+        items: [
+            {
+                word: { "arabic": "هُوَ", "urdu": "وہ", "english": "He", "ayah": 6222 },
+                example: { "arabic": "هُوَ اللَّهُ", "urdu": "وہ اللہ ہے", "english": "He is Allah", "ayah": 6222 }
+            },
+            {
+                word: { "arabic": "هُمْ", "urdu": "وہ سب", "english": "They", "ayah": 12 },
+                example: { "arabic": "هُمْ يُنْفِقُونَ", "urdu": "وہ خرچ کرتے ہیں", "english": "They spend", "ayah": 12 }
+            },
+            {
+                word: { "arabic": "أَنْتَ", "urdu": "آپ / تم", "english": "You", "ayah": 5 },
+                example: { "arabic": "أَنْتَ الْمَوْلَى", "urdu": "آپ ہی مولیٰ ہیں", "english": "You are the Protector", "ayah": 5 }
+            },
+            {
+                word: { "arabic": "أَنْتُمْ", "urdu": "آپ سب", "english": "You (plural)", "ayah": 190 },
+                example: { "arabic": "أَنْتُمْ مُسْلِمُونَ", "urdu": "تم سب مسلمان ہو", "english": "You all are Muslims", "ayah": 190 }
+            },
+            {
+                word: { "arabic": "أَنَا", "urdu": "میں", "english": "I", "ayah": 3282 },
+                example: { "arabic": "أَنَا رَبُّكَ", "urdu": "میں تمہارا رب ہوں", "english": "I am your Lord", "ayah": 3282 }
+            },
+            {
+                word: { "arabic": "نَحْنُ", "urdu": "ہم", "english": "We", "ayah": 1811 },
+                example: { "arabic": "نَحْنُ نَصَرْنَا", "urdu": "ہم نے مدد کی", "english": "We helped", "ayah": 1811 }
+            },
+            {
+                word: { "arabic": "هِيَ", "urdu": "وہ (عورت)", "english": "She", "ayah": 6225 },
+                example: { "arabic": "هِيَ الْحَقُّ", "urdu": "وہ حق ہے", "english": "It is the Truth", "ayah": 6225 }
+            },
+            {
+                word: { "arabic": "أَنْتِ", "urdu": "آپ (عورت)", "english": "You (F)", "ayah": 5 },
+                example: { "arabic": "أَنْتِ صَادِقَةٌ", "urdu": "آپ سچی ہیں", "english": "You are truthful", "ayah": 5 }
+            }
         ],
         exercises: [
             { type: "fill",  question: "______ اللَّهُ (He is Allah)",           options: ["هُوَ","أَنَا","هِيَ"],   answer: "هُوَ"  },
@@ -148,35 +163,31 @@ const grammarData = {
     },
     "past-tense": {
         rule: "Fi'l Maadi: Actions completed in the past. The root form is the 3rd person singular masculine.",
-        words: [
-            { "arabic": "فَعَلَ",    "urdu": "اس نے کیا",   "english": "He did",       "ayah": 6189 },
-            { "arabic": "فَعَلُوا",  "urdu": "ان سب نے کیا","english": "They did",     "ayah": 5    },
-            { "arabic": "فَعَلْتَ",  "urdu": "آپ نے کیا",   "english": "You did",      "ayah": 2951 },
-            { "arabic": "فَعَلْتُمْ","urdu": "آپ سب نے کیا","english": "You all did",  "ayah": 5    },
-            { "arabic": "فَعَلْتُ",  "urdu": "میں نے کیا",  "english": "I did",        "ayah": 5    },
-            { "arabic": "فَعَلْنَا", "urdu": "ہم نے کیا",   "english": "We did",       "ayah": 5    }
-        ],
-        examples: [
-            { "arabic": "خَلَقَ الْإِنسَانَ",       "urdu": "اس نے انسان کو پیدا کیا",                   "english": "He created man",               "ayah": 5795 },
-            { "arabic": "قَالُوا آمَنَّا",           "urdu": "انہوں نے کہا ہم ایمان لائے",               "english": "They said, 'We believe'",      "ayah": 59   },
-            { "arabic": "أَنْعَمْتَ عَلَيْهِمْ",    "urdu": "آپ نے ان پر انعام کیا",                    "english": "You bestowed favor upon them",  "ayah": 7    },
-            { "arabic": "نَصَرُوا اللَّهَ",         "urdu": "انہوں نے اللہ کی مدد کی",                  "english": "They helped Allah",             "ayah": 3374 },
-            { "arabic": "كَتَبَ اللَّهُ",           "urdu": "اللہ نے لکھ دیا",                          "english": "Allah has written",             "ayah": 852  },
-            { "arabic": "جَاءَ نَصْرُ اللَّهِ",    "urdu": "اللہ کی مدد آگئی",                         "english": "The help of Allah came",        "ayah": 6214 },
-            { "arabic": "فَقَدْ ظَلَمَ نَفْسَهُ",  "urdu": "پس یقیناً اس نے اپنی جان پر ظلم کیا",      "english": "Then he certainly wronged himself","ayah": 65 },
-            { "arabic": "صَبَرُوا وَصَابَرُوا",    "urdu": "انہوں نے صبر کیا اور ثابت قدم رہے",        "english": "They were patient and steadfast","ayah": 200 },
-            { "arabic": "آمَنَ الرَّسُولُ",         "urdu": "رسول ایمان لایا",                          "english": "The Messenger believed",        "ayah": 285  },
-            { "arabic": "جَعَلَ اللَّهُ الْكَعْبَةَ","urdu": "اللہ نے کعبہ کو بنایا",                  "english": "Allah made the Kaaba",          "ayah": 673  },
-            { "arabic": "بَلَغَ مَطْلَعَ الشَّمْسِ","urdu": "وہ سورج نکلنے کی جگہ پہنچ گیا",           "english": "He reached the rising of the sun","ayah": 2316},
-            { "arabic": "عَلِمَ اللَّهُ أَنَّكُمْ", "urdu": "اللہ نے جان لیا کہ تم",                   "english": "Allah knew that you...",        "ayah": 289  },
-            { "arabic": "فَعَلَ رَبُّكَ",           "urdu": "تیرے رب نے کیا",                          "english": "Your Lord did",                 "ayah": 6189 },
-            { "arabic": "أَرَادَ اللَّهُ بِكُمُ",   "urdu": "اللہ نے تمہارے ساتھ ارادہ کیا",           "english": "Allah intended for you...",     "ayah": 185  },
-            { "arabic": "ذَهَبَ اللَّهُ بِنُورِهِمْ","urdu": "اللہ ان کا نور لے گیا",                  "english": "Allah took away their light",   "ayah": 17   },
-            { "arabic": "قَتَلَ دَاوُودُ جَالُوتَ","urdu": "داؤد نے جالوت کو قتل کیا",               "english": "David killed Goliath",          "ayah": 255  },
-            { "arabic": "شَرِبُوا مِنْهُ",          "urdu": "انہوں نے اس میں سے پیا",                  "english": "They drank from it",            "ayah": 250  },
-            { "arabic": "خَرَجُوا مِنْ دِيَارِهِمْ","urdu": "وہ اپنے گھروں سے نکلے",                  "english": "They went out from their homes","ayah": 246  },
-            { "arabic": "فَقَدْ فَازَ",              "urdu": "پس یقیناً وہ کامیاب ہوگیا",               "english": "Then he certainly succeeded",   "ayah": 185  },
-            { "arabic": "غَلَبَتِ الرُّومُ",        "urdu": "رومی غالب آگئے",                          "english": "The Romans overcame",           "ayah": 1667 }
+        items: [
+            {
+                word: { "arabic": "فَعَلَ", "urdu": "اس نے کیا", "english": "He did", "ayah": 6189 },
+                example: { "arabic": "خَلَقَ الْإِنسَانَ", "urdu": "اس نے انسان کو پیدا کیا", "english": "He created man", "ayah": 5795 }
+            },
+            {
+                word: { "arabic": "فَعَلُوا", "urdu": "ان سب نے کیا", "english": "They did", "ayah": 5 },
+                example: { "arabic": "قَالُوا آمَنَّا", "urdu": "انہوں نے کہا ہم ایمان لائے", "english": "They said, 'We believe'", "ayah": 59 }
+            },
+            {
+                word: { "arabic": "فَعَلْتَ", "urdu": "آپ نے کیا", "english": "You did", "ayah": 2951 },
+                example: { "arabic": "أَنْعَمْتَ عَلَيْهِمْ", "urdu": "آپ نے ان پر انعام کیا", "english": "You bestowed favor upon them", "ayah": 7 }
+            },
+            {
+                word: { "arabic": "فَعَلْتُمْ", "urdu": "آپ سب نے کیا", "english": "You all did", "ayah": 5 },
+                example: { "arabic": "صَبَرْتُمْ", "urdu": "تم سب نے صبر کیا", "english": "You all were patient", "ayah": 5 }
+            },
+            {
+                word: { "arabic": "فَعَلْتُ", "urdu": "میں نے کیا", "english": "I did", "ayah": 5 },
+                example: { "arabic": "أَسْلَمْتُ", "urdu": "میں نے اسلام قبول کیا", "english": "I submitted", "ayah": 5 }
+            },
+            {
+                word: { "arabic": "فَعَلْنَا", "urdu": "ہم نے کیا", "english": "We did", "ayah": 5 },
+                example: { "arabic": "جَعَلْنَا", "urdu": "ہم نے بنایا", "english": "We made", "ayah": 5 }
+            }
         ],
         exercises: [
             { type: "mcq",   question: "Which word means 'They did' (Past)?",       options: ["فَعَلَ","فَعَلُوا","فَعَلْتَ"],  answer: "فَعَلُوا" },
@@ -194,34 +205,27 @@ const grammarData = {
     },
     "universal-tense": {
         rule: "Fi'l Mudari: Ongoing actions (Present or Future). Indicated by prefixes like Ya, Ta, A, Na.",
-        words: [
-            { "arabic": "يَفْعَلُ",    "urdu": "وہ کرتا ہے / کرے گا","english": "He does / will do","ayah": 5 },
-            { "arabic": "يَفْعَلُونَ", "urdu": "وہ سب کرتے ہیں",     "english": "They do",         "ayah": 15 },
-            { "arabic": "تَفْعَلُ",    "urdu": "آپ کرتے ہیں",        "english": "You do / She does","ayah": 5 },
-            { "arabic": "أَفْعَلُ",    "urdu": "میں کرتا ہوں",       "english": "I do",            "ayah": 5  },
-            { "arabic": "نَفْعَلُ",    "urdu": "ہم کرتے ہیں",        "english": "We do",           "ayah": 5  }
-        ],
-        examples: [
-            { "arabic": "يَعْلَمُونَ",              "urdu": "وہ سب جانتے ہیں",                  "english": "They know",                     "ayah": 75   },
-            { "arabic": "نَعْبُدُ",                 "urdu": "ہم عبادت کرتے ہیں",                "english": "We worship",                    "ayah": 5    },
-            { "arabic": "يَضْرِبُ اللَّهُ الْأَمْثَالَ","urdu": "اللہ مثالیں بیان کرتا ہے",   "english": "Allah sets forth parables",     "ayah": 1773 },
-            { "arabic": "تُؤْمِنُونَ بِاللَّهِ",   "urdu": "تم اللہ پر ایمان لاتے ہو",         "english": "You believe in Allah",          "ayah": 110  },
-            { "arabic": "يَقُولُ النَّاسُ",         "urdu": "لوگ کہتے ہیں",                     "english": "The people say",                "ayah": 15   },
-            { "arabic": "يَخْلُقُ مَا يَشَاءُ",    "urdu": "وہ جو چاہتا ہے پیدا کرتا ہے",     "english": "He creates what He wills",      "ayah": 54   },
-            { "arabic": "نَسْتَعِينُ",              "urdu": "ہم مدد مانگتے ہیں",                "english": "We seek help",                  "ayah": 5    },
-            { "arabic": "يَهْدِي اللَّهُ لِنُورِهِ","urdu": "اللہ اپنے نور کی طرف ہدایت دیتا ہے","english": "Allah guides to His light",   "ayah": 2465 },
-            { "arabic": "مَا تَعْمَلُونَ",          "urdu": "جو تم لوگ کرتے ہو",               "english": "What you all do",               "ayah": 110  },
-            { "arabic": "أَعْبُدُ مَا تَعْبُدُونَ","urdu": "میں اس کی عبادت کرتا ہوں جس کی تم","english": "I worship what you worship",   "ayah": 6208 },
-            { "arabic": "يَنْظُرُونَ إِلَيْكَ",    "urdu": "وہ آپ کی طرف دیکھتے ہیں",         "english": "They look at you",              "ayah": 145  },
-            { "arabic": "تَفْعَلُونَ الْخَيْرَ",   "urdu": "تم بھلائی کرتے ہو",               "english": "You all do good",               "ayah": 77   },
-            { "arabic": "نَحْنُ نَحْيِي",           "urdu": "ہم زندگی دیتے ہیں",               "english": "We give life",                  "ayah": 1811 },
-            { "arabic": "يَرْزُقُ مَنْ يَشَاءُ",   "urdu": "وہ جسے چاہتا ہے رزق دیتا ہے",     "english": "He provides for whom He wills", "ayah": 1764 },
-            { "arabic": "يَكْتُبُونَ الْكِتَابَ",  "urdu": "وہ کتاب لکھتے ہیں",               "english": "They write the book",           "ayah": 79   },
-            { "arabic": "تُصَلُّونَ لَهُ",         "urdu": "تم اس کے لیے نماز پڑھتے ہو",      "english": "You perform prayer for Him",    "ayah": 6209 },
-            { "arabic": "يَخَافُونَ رَبَّهُمْ",    "urdu": "وہ اپنے رب سے ڈرتے ہیں",          "english": "They fear their Lord",          "ayah": 300  },
-            { "arabic": "نُؤْمِنُ بِاللَّهِ",       "urdu": "ہم اللہ پر ایمان لاتے ہیں",        "english": "We believe in Allah",           "ayah": 5    },
-            { "arabic": "يَشْرَبُونَ مِنْهَا",     "urdu": "وہ اس میں سے پیتے ہیں",           "english": "They drink from it",            "ayah": 4991 },
-            { "arabic": "نَتَّبِعُ الْهُدَى",       "urdu": "ہم ہدایت کی پیروی کرتے ہیں",      "english": "We follow the guidance",        "ayah": 5    }
+        items: [
+            {
+                word: { "arabic": "يَفْعَلُ", "urdu": "وہ کرتا ہے / کرے گا", "english": "He does / will do", "ayah": 5 },
+                example: { "arabic": "يَخْلُقُ مَا يَشَاءُ", "urdu": "وہ جو چاہتا ہے پیدا کرتا ہے", "english": "He creates what He wills", "ayah": 54 }
+            },
+            {
+                word: { "arabic": "يَفْعَلُونَ", "urdu": "وہ سب کرتے ہیں", "english": "They do", "ayah": 15 },
+                example: { "arabic": "يَعْلَمُونَ", "urdu": "وہ سب جانتے ہیں", "english": "They know", "ayah": 75 }
+            },
+            {
+                word: { "arabic": "تَفْعَلُ", "urdu": "آپ کرتے ہیں", "english": "You do / She does", "ayah": 5 },
+                example: { "arabic": "تُؤْمِنُونَ بِاللَّهِ", "urdu": "تم اللہ پر ایمان لاتے ہو", "english": "You believe in Allah", "ayah": 110 }
+            },
+            {
+                word: { "arabic": "أَفْعَلُ", "urdu": "میں کرتا ہوں", "english": "I do", "ayah": 5 },
+                example: { "arabic": "أَعْبُدُ مَا تَعْبُدُونَ", "urdu": "میں اس کی عبادت کرتا ہوں جس کی تم", "english": "I worship what you worship", "ayah": 6208 }
+            },
+            {
+                word: { "arabic": "نَفْعَلُ", "urdu": "ہم کرتے ہیں", "english": "We do", "ayah": 5 },
+                example: { "arabic": "نَعْبُدُ", "urdu": "ہم عبادت کرتے ہیں", "english": "We worship", "ayah": 5 }
+            }
         ],
         exercises: [
             { type: "mcq",   question: "What is the meaning of 'نَعْبُدُ'?",         options: ["I worship","We worship","He worships"], answer: "We worship"    },

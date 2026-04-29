@@ -649,7 +649,7 @@ footer {
     justify-content: center;
     border-bottom: 2px solid rgba(240, 189, 90, 0.1);
     padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     flex-wrap: wrap;
 }
 
@@ -707,6 +707,8 @@ footer {
     color: var(--accent-gold);
     margin-bottom: 2rem;
     line-height: 1;
+    position: relative;
+    display: inline-block;
 }
 
 .word-translations {
@@ -740,6 +742,78 @@ footer {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-white);
+}
+
+/* ========================================
+   Combined Academy Card (Side-by-Side)
+   ======================================== */
+.combined-academy-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.combined-academy-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 3rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+}
+
+.combined-academy-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--accent-purple);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+}
+
+.combined-academy-card .card-example {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding-right: 3rem;
+    height: 100%;
+}
+
+.combined-academy-card .card-word {
+    text-align: center;
+}
+
+.combined-academy-card .example-image {
+    max-width: 250px;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 992px) {
+    .combined-academy-card {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem;
+    }
+    
+    .combined-academy-card .card-example {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-right: 0;
+        padding-bottom: 2rem;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .combined-academy-card .card-word {
+        align-items: center;
+        text-align: center;
+    }
 }
 
 /* ========================================
@@ -911,7 +985,7 @@ footer {
     font-size: 2.8rem;
     color: #f0bd5a; /* Quranic Gold */
     margin-bottom: 2rem;
-    text-align: right;
+    text-align: center;
     line-height: 1.6;
 }
 
@@ -953,7 +1027,7 @@ footer {
     background: linear-gradient(to right, rgba(112, 0, 255, 0.1), transparent);
     border-left: 4px solid var(--accent-purple);
     padding: 1.5rem 2rem;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
     border-radius: 0 15px 15px 0;
 }
 
