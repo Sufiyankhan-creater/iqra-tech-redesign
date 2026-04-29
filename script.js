@@ -657,7 +657,7 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                 <div class="reader-ayat-card reveal-ayat" style="animation-delay: ${i * 0.1}s; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
                     <div class="ayat-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                         <span class="ayat-label" style="background: rgba(240, 189, 90, 0.1); color: var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 5px;">AYAH ${ayah.verse_key}</span>
-                        <div class="divider-badge" onclick="speakArabic(decodeURIComponent('${encodeURIComponent(fullArabicVerse)}'), null, this)" style="cursor:pointer; color:var(--accent-teal); font-size: 0.8rem; border: 1px solid var(--accent-teal); padding: 0.3rem 0.8rem; border-radius: 50px;">
+                        <div class="divider-badge" onclick="speakArabic('', ${ayah.id}, this)" style="cursor:pointer; color:var(--accent-teal); font-size: 0.8rem; border: 1px solid var(--accent-teal); padding: 0.3rem 0.8rem; border-radius: 50px;">
                             <i class="fas fa-play" style="margin-right: 5px;"></i> Play Audio
                         </div>
                     </div>
