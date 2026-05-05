@@ -520,12 +520,61 @@ window.moveToNextTopic = function (nextCat) {
 }
 
 // ─── Quran Explorer Logic (Islam360 Style) ──────────────────────────────────
+let pendingQuranLoad = null;
+let selectedTranslationLang = 'ur';
+let isTranslationVisible = false;
+
+window.promptLanguageSelection = function(id, type, surahName = '') {
+    pendingQuranLoad = { id, type, surahName };
+    document.getElementById('language-modal').style.display = 'flex';
+}
+
 function initQuranExplorer() {
     const closeBtn = document.getElementById('close-reader');
     if (closeBtn) {
         closeBtn.onclick = () => {
             document.getElementById('quran-reader-overlay').style.display = 'none';
             document.body.style.overflow = 'auto';
+        };
+    }
+
+    // Language Modal Logic
+    const closeLangBtn = document.getElementById('close-lang-modal');
+    if (closeLangBtn) {
+        closeLangBtn.onclick = () => document.getElementById('language-modal').style.display = 'none';
+    }
+
+    const langUrBtn = document.getElementById('lang-ur-btn');
+    if (langUrBtn) {
+        langUrBtn.onclick = () => {
+            selectedTranslationLang = 'ur';
+            document.getElementById('language-modal').style.display = 'none';
+            if (pendingQuranLoad) window.loadQuranContent(pendingQuranLoad.id, pendingQuranLoad.type, pendingQuranLoad.surahName);
+        };
+    }
+
+    const langEnBtn = document.getElementById('lang-en-btn');
+    if (langEnBtn) {
+        langEnBtn.onclick = () => {
+            selectedTranslationLang = 'en';
+            document.getElementById('language-modal').style.display = 'none';
+            if (pendingQuranLoad) window.loadQuranContent(pendingQuranLoad.id, pendingQuranLoad.type, pendingQuranLoad.surahName);
+        };
+    }
+
+    // Translation Toggle Logic
+    const toggleTransBtn = document.getElementById('toggle-translation-btn');
+    if (toggleTransBtn) {
+        toggleTransBtn.onclick = () => {
+            isTranslationVisible = !isTranslationVisible;
+            toggleTransBtn.textContent = isTranslationVisible ? 'Hide Translation' : 'Show Translation';
+            
+            document.querySelectorAll('.translation-group').forEach(el => {
+                el.style.display = isTranslationVisible ? 'block' : 'none';
+            });
+            document.querySelectorAll('.wbw-trans').forEach(el => {
+                el.style.display = isTranslationVisible ? 'block' : 'none';
+            });
         };
     }
 
@@ -556,7 +605,7 @@ function initQuranExplorer() {
                 <div style="color: #fff; font-weight: 600; font-size: 1.1rem; margin-top: 1rem;">Para ${i}</div>
                 <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">Read with Word-by-Word Breakdown</p>
             `;
-            card.onclick = () => window.loadQuranContent(i, 'juz');
+            card.onclick = () => window.promptLanguageSelection(i, 'juz');
             gridParah.appendChild(card);
         }
 
@@ -575,7 +624,7 @@ function initQuranExplorer() {
                             <div style="color: #fff; font-weight: 600; font-size: 1.1rem; margin-top: 1rem;">${surah.englishName}</div>
                             <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">${surah.englishNameTranslation} • ${surah.numberOfAyahs} Ayahs</p>
                         `;
-                        card.onclick = () => window.loadQuranContent(surah.number, 'surah', surah.englishName);
+                        card.onclick = () => window.promptLanguageSelection(surah.number, 'surah', surah.englishName);
                         gridSurah.appendChild(card);
                     });
                 }
@@ -619,6 +668,11 @@ window.loadQuranContent = async function (id, type, surahName = '') {
     const overlay = document.getElementById('quran-reader-overlay');
     const content = document.getElementById('reader-content');
     const label = document.getElementById('reader-juz-label');
+
+    // Reset translation visibility
+    isTranslationVisible = false;
+    const toggleTransBtn = document.getElementById('toggle-translation-btn');
+    if (toggleTransBtn) toggleTransBtn.textContent = 'Show Translation';
 
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
@@ -684,26 +738,26 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                             const transEn = transEnText.replace(/'/g, "\\'");
                             const translit = translitText.replace(/'/g, "\\'");
                             
+                            const wbwTransText = selectedTranslationLang === 'en' ? transEnText : transUrText;
+                            const wbwTransClass = selectedTranslationLang === 'en' ? '' : 'urdu-font';
+
                             return `
                             <div class="wbw-word" onclick="openGrammarModal('${arabic}', '${translit}', '${transEn}', '${transUr}', '')">
                                 <span class="wbw-arabic">${arabicText}</span>
                                 <span class="wbw-translit">${translitText}</span>
-                                <span class="wbw-trans urdu-font" style="font-size: 1.2rem; color: #fff;">${transUrText}</span>
+                                <span class="wbw-trans ${wbwTransClass}" style="font-size: 1.2rem; color: #fff; display: none;">${wbwTransText}</span>
                             </div>
                             `;
                         }).join('')}
                     </div>
                     
                     <!-- Islam360 Style: Full Verse Translations -->
-                    <div class="translation-group" style="margin-top: 2rem;">
+                    <div class="translation-group" style="margin-top: 2rem; display: none;">
                         <div class="reader-trans-item">
-                            <span class="trans-lang-label" style="color: var(--accent-gold);"><i class="fas fa-language"></i> Urdu Translation</span>
-                            <div class="trans-text-main urdu-font-reader" style="font-size: 1.4rem; color: #f5f5f7; margin-top: 0.5rem; text-align: right;">${urduFull}</div>
-                        </div>
-                        
-                        <div class="reader-trans-item" style="margin-top: 1.5rem;">
-                            <span class="trans-lang-label" style="color: var(--accent-gold);"><i class="fas fa-globe"></i> English Translation</span>
-                            <div class="trans-text-main" style="color: var(--text-muted); margin-top: 0.5rem;">${engFull}</div>
+                            <span class="trans-lang-label" style="color: var(--accent-gold);">
+                                ${selectedTranslationLang === 'en' ? '<i class="fas fa-globe"></i> English Translation' : '<i class="fas fa-language"></i> Urdu Translation'}
+                            </span>
+                            <div class="trans-text-main ${selectedTranslationLang === 'en' ? '' : 'urdu-font-reader'}" style="font-size: 1.4rem; color: #f5f5f7; margin-top: 0.5rem; text-align: ${selectedTranslationLang === 'en' ? 'left' : 'right'};">${selectedTranslationLang === 'en' ? engFull : urduFull}</div>
                         </div>
                     </div>
                 </div>
