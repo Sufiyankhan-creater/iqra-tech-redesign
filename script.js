@@ -769,8 +769,8 @@ window.loadQuranContent = async function (id, type, surahName = '', jumpToAyah =
         const apiPath = type === 'juz' ? `by_juz/${id}` : `by_chapter/${id}`;
         
         const [wbwResUr, wbwResEn] = await Promise.all([
-            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97&word_fields=text_uthmani,translation,transliteration,root_text&per_page=50`),
-            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=en&translations=131&word_fields=translation&per_page=50`)
+            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97&word_fields=text_uthmani,translation,transliteration,root_text&per_page=300`),
+            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=en&translations=20,131&word_fields=translation&per_page=300`)
         ]);
         
         const wbwDataUr = await wbwResUr.json();
