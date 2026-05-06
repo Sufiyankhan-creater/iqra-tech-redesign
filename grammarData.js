@@ -20,11 +20,13 @@ const grammarData = {
             },
             {
                 word: { "arabic": "بِ", "urdu": "ساتھ", "english": "With / By", "ayah": 1 },
-                example: { "arabic": "بِسْمِ اللَّهِ", "urdu": "اللہ کے نام کے ساتھ", "english": "With the name of Allah", "ayah": 1, "image": "assets/bismillah.png" }
+                example: { "arabic": "بِسْمِ اللَّهِ", "urdu": "اللہ کے نام کے ساتھ", "english": "With the name of Allah", "ayah": 1, "image": "assets/bismillah.png" },
+                root: "س م و"
             },
             {
                 word: { "arabic": "لِ", "urdu": "لئے", "english": "For", "ayah": 2 },
-                example: { "arabic": "الْحَمْدُ لِلَّهِ", "urdu": "تمام تعریف اللہ کے لیے ہے", "english": "All praise is for Allah", "ayah": 2 }
+                example: { "arabic": "الْحَمْدُ لِلَّهِ", "urdu": "تمام تعریف اللہ کے لیے ہے", "english": "All praise is for Allah", "ayah": 2 },
+                root: "ح م د"
             },
             {
                 word: { "arabic": "عَنْ", "urdu": "سے / متعلق", "english": "About / From", "ayah": 6202 },

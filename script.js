@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLoaders();
     initAcademy();
     initQuranExplorer();
+    renderBookmarkUI();
     initParticles();
     animateStats();
     initScrollReveal();
@@ -270,6 +271,14 @@ function renderAcademy() {
                         <div class="trans-item"><span class="label">ENG</span><span class="eng-text">${item.word.english}</span></div>
                     </div>
                 </div>
+                ${item.root ? `
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span style="font-size: 0.7rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 1px;">ROOT: ${item.root}</span>
+                        <button class="btn btn-teal" style="font-size: 0.6rem; padding: 0.4rem 0.8rem; border-radius: 6px; background: rgba(0,168,132,0.1); border: 1px solid var(--accent-teal);" onclick="window.open('https://corpus.quran.com/search.jsp?q=${item.root.replace(/ /g, '')}', '_blank')">
+                            <i class="fas fa-book-open"></i> Root Audit
+                        </button>
+                    </div>
+                ` : ''}
             </div>`).join('');
 
     } else {
@@ -519,6 +528,61 @@ window.moveToNextTopic = function (nextCat) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ─── Bookmark System Logic ──────────────────────────────────────────────────
+function saveLastRead(id, type, name, verseKey = null) {
+    const bookmark = { id, type, name, verseKey, timestamp: new Date().getTime() };
+    localStorage.setItem('quran_bookmark', JSON.stringify(bookmark));
+    renderBookmarkUI();
+}
+
+function renderBookmarkUI() {
+    const bookmark = JSON.parse(localStorage.getItem('quran_bookmark'));
+    const container = document.getElementById('resume-reading-container');
+    const textEl = document.getElementById('resume-location-text');
+    const card = document.getElementById('resume-card');
+
+    if (bookmark && container && textEl) {
+        container.style.display = 'block';
+        let locationText = bookmark.type === 'juz' ? `Para ${bookmark.id}` : bookmark.name;
+        if (bookmark.verseKey) {
+            locationText += ` (Ayah ${bookmark.verseKey})`;
+        }
+        textEl.textContent = locationText;
+        
+        card.onclick = () => {
+            window.loadQuranContent(bookmark.id, bookmark.type, bookmark.name, bookmark.verseKey);
+        };
+        
+        // Highlight last read in grids
+        updateGridBadges(bookmark.id, bookmark.type);
+    } else if (container) {
+        container.style.display = 'none';
+    }
+}
+
+function updateGridBadges(activeId, activeType) {
+    // Remove existing badges
+    document.querySelectorAll('.last-visited-badge').forEach(el => el.remove());
+    
+    const selector = activeType === 'juz' ? `.juz-card[data-juz="${activeId}"]` : `.surah-card[onclick*="window.promptLanguageSelection(${activeId},"]`;
+    const card = document.querySelector(selector);
+    
+    if (card) {
+        const badge = document.createElement('div');
+        badge.className = 'last-visited-badge';
+        badge.innerHTML = '<i class="fas fa-bookmark"></i> Last Read';
+        badge.style = `
+            position: absolute; top: 1rem; right: 1rem;
+            background: var(--accent-gold); color: #000;
+            font-size: 0.6rem; font-weight: 800; padding: 0.3rem 0.6rem;
+            border-radius: 5px; text-transform: uppercase;
+            animation: fadeIn 0.5s ease-out;
+        `;
+        card.style.position = 'relative';
+        card.appendChild(badge);
+    }
+}
+
 // ─── Quran Explorer Logic (Islam360 Style) ──────────────────────────────────
 let pendingQuranLoad = null;
 let selectedTranslationLang = 'ur';
@@ -647,24 +711,38 @@ function initQuranExplorer() {
 }
 
 // Helper to open grammar modal
-window.openGrammarModal = function(arabic, translit, translationEn, translationUr, ismType) {
+window.openGrammarModal = function(arabic, translit, translationEn, translationUr, rootWord, ismType, verseKey = '', wordPos = '') {
     document.getElementById('grammar-arabic').textContent = arabic;
     document.getElementById('grammar-translit').textContent = translit;
     document.getElementById('grammar-english').textContent = translationEn;
     // Mock Urdu word-to-word if not provided (public APIs usually lack Urdu WBW without heavy mapping)
     document.getElementById('grammar-urdu').textContent = translationUr || translationEn; 
     
-    // Mocking Root and Syntax for demonstration (simulating Islam360 deeper linguistic tagging)
-    const roots = ["ح م د", "ر ح م", "ع ل م", "ق و ل", "خ ل ق", "ك ت ب", "س م ع"];
+    // Spaced root for better clarity (e.g., 'ح م د')
+    const spacedRoot = rootWord ? rootWord.split('').join(' ') : '---';
+    document.getElementById('grammar-root').textContent = spacedRoot;
+    
+    // Mocking Syntax for demonstration (simulating Islam360 deeper linguistic tagging)
     const types = ["Noun (Ism)", "Verb (Fi'l)", "Particle (Harf)"];
-    document.getElementById('grammar-root').textContent = roots[Math.floor(Math.random() * roots.length)];
     document.getElementById('grammar-syntax').textContent = ismType || types[Math.floor(Math.random() * types.length)];
     
+    // Search link to Corpus Quran for authoritative linguistic analysis
+    const searchBtn = document.getElementById('grammar-search-btn');
+    if (searchBtn) {
+        searchBtn.onclick = () => {
+            if (verseKey && wordPos) {
+                window.open(`https://corpus.quran.com/wordmorphology.jsp?location=(${verseKey}:${wordPos})`, '_blank');
+            } else {
+                window.open(`https://corpus.quran.com/search.jsp?q=${arabic}`, '_blank');
+            }
+        };
+    }
+
     document.getElementById('grammar-modal').style.display = 'flex';
 }
 
 // Unified Loader for Juz and Surah
-window.loadQuranContent = async function (id, type, surahName = '') {
+window.loadQuranContent = async function (id, type, surahName = '', jumpToAyah = null) {
     const overlay = document.getElementById('quran-reader-overlay');
     const content = document.getElementById('reader-content');
     const label = document.getElementById('reader-juz-label');
@@ -673,6 +751,9 @@ window.loadQuranContent = async function (id, type, surahName = '') {
     isTranslationVisible = false;
     const toggleTransBtn = document.getElementById('toggle-translation-btn');
     if (toggleTransBtn) toggleTransBtn.textContent = 'Show Translation';
+
+    // Save to bookmark
+    saveLastRead(id, type, surahName);
 
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
@@ -688,7 +769,7 @@ window.loadQuranContent = async function (id, type, surahName = '') {
         const apiPath = type === 'juz' ? `by_juz/${id}` : `by_chapter/${id}`;
         
         const [wbwResUr, wbwResEn] = await Promise.all([
-            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97,131&word_fields=text_uthmani,translation,transliteration&per_page=50`),
+            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97,131&word_fields=text_uthmani,translation,transliteration,root_text&per_page=50`),
             fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=en&word_fields=translation&per_page=50`)
         ]);
         
@@ -708,7 +789,7 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                 const engFull = ayah.translations.find(t => t.resource_id === 131)?.text || '';
 
                 return `
-                <div class="reader-ayat-card reveal-ayat" style="animation-delay: ${i * 0.1}s; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
+                <div class="reader-ayat-card reveal-ayat" id="ayah-${ayah.verse_key}" data-verse-key="${ayah.verse_key}" style="animation-delay: ${i * 0.1}s; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
                     <div class="ayat-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                         <span class="ayat-label" style="background: rgba(240, 189, 90, 0.1); color: var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 5px;">AYAH ${ayah.verse_key}</span>
                         <div class="divider-badge" onclick="speakArabic('', ${ayah.id}, this)" style="cursor:pointer; color:var(--accent-teal); font-size: 0.8rem; border: 1px solid var(--accent-teal); padding: 0.3rem 0.8rem; border-radius: 50px;">
@@ -732,17 +813,19 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                             const transUrText = w.translation ? w.translation.text : '';
                             const transEnText = (wEn && wEn.translation && wEn.translation.text) ? wEn.translation.text : '';
                             const translitText = (w.transliteration && w.transliteration.text) ? w.transliteration.text : '';
+                            const rootText = w.root_text || '';
                             
                             const arabic = arabicText.replace(/'/g, "\\'");
                             const transUr = transUrText.replace(/'/g, "\\'");
                             const transEn = transEnText.replace(/'/g, "\\'");
                             const translit = translitText.replace(/'/g, "\\'");
+                            const root = rootText.replace(/'/g, "\\'");
                             
                             const wbwTransText = selectedTranslationLang === 'en' ? transEnText : transUrText;
                             const wbwTransClass = selectedTranslationLang === 'en' ? '' : 'urdu-font';
 
                             return `
-                            <div class="wbw-word" onclick="openGrammarModal('${arabic}', '${translit}', '${transEn}', '${transUr}', '')">
+                            <div class="wbw-word" onclick="openGrammarModal('${arabic}', '${translit}', '${transEn}', '${transUr}', '${root}', '', '${ayah.verse_key}', '${w.position}')">
                                 <span class="wbw-arabic">${arabicText}</span>
                                 <span class="wbw-translit">${translitText}</span>
                                 <span class="wbw-trans ${wbwTransClass}" style="font-size: 1.2rem; color: #fff; display: none;">${wbwTransText}</span>
@@ -762,11 +845,53 @@ window.loadQuranContent = async function (id, type, surahName = '') {
                     </div>
                 </div>
             `}).join('') + `</div>`;
+
+            // Auto-scroll to jumpToAyah if provided
+            if (jumpToAyah) {
+                setTimeout(() => {
+                    const targetAyah = document.getElementById(`ayah-${jumpToAyah}`);
+                    if (targetAyah) {
+                        targetAyah.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetAyah.classList.add('highlight-ayah');
+                        setTimeout(() => targetAyah.classList.remove('highlight-ayah'), 3000);
+                    }
+                }, 1000);
+            }
+
+            // Init Intersection Observer for bookmarking
+            initVerseObserver(id, type, surahName);
         }
     } catch (err) {
         console.error("Full Error:", err);
         content.innerHTML = `<p style="text-align: center; color: #ff5555;">Transmission Error: ${err.message || err.toString()}</p>`;
     }
+}
+
+// ─── Verse Tracking & Auto-Bookmark ────────────────────────────────────────
+function initVerseObserver(id, type, name) {
+    const readerContent = document.getElementById('reader-content');
+    if (!readerContent) return;
+
+    const options = {
+        root: document.getElementById('quran-reader-overlay'),
+        rootMargin: '0px',
+        threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const verseKey = entry.target.getAttribute('data-verse-key');
+                if (verseKey) {
+                    saveLastRead(id, type, name, verseKey);
+                }
+            }
+        });
+    }, options);
+
+    document.querySelectorAll('.reader-ayat-card').forEach(card => {
+        observer.observe(card);
+    });
 }
 
 // ─── Visual Effects ────────────────────────────────────────────────────────
