@@ -835,12 +835,23 @@ window.loadQuranContent = async function (id, type, surahName = '', jumpToAyah =
                     </div>
                     
                     <!-- Islam360 Style: Full Verse Translations -->
-                    <div class="translation-group" style="margin-top: 2rem; display: none;">
-                        <div class="reader-trans-item">
-                            <span class="trans-lang-label" style="color: var(--accent-gold);">
-                                ${selectedTranslationLang === 'en' ? '<i class="fas fa-globe"></i> English Translation' : '<i class="fas fa-language"></i> Urdu Translation'}
-                            </span>
-                            <div class="trans-text-main ${selectedTranslationLang === 'en' ? '' : 'urdu-font-reader'}" style="font-size: 1.4rem; color: #f5f5f7; margin-top: 0.5rem; text-align: ${selectedTranslationLang === 'en' ? 'left' : 'right'};">${selectedTranslationLang === 'en' ? engFull : urduFull}</div>
+                    <div class="translation-group" style="margin-top: 2rem; display: none; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem;">
+                        <div style="display: flex; flex-direction: column; gap: 2rem;">
+                            <!-- Urdu Translation -->
+                            <div class="reader-trans-item">
+                                <span class="trans-lang-label" style="color: var(--accent-gold);">
+                                    <i class="fas fa-language"></i> Urdu Translation
+                                </span>
+                                <div class="trans-text-main urdu-font-reader" style="font-size: 1.4rem; color: #f5f5f7; margin-top: 0.5rem; text-align: right;">${urduFull}</div>
+                            </div>
+
+                            <!-- English Translation -->
+                            <div class="reader-trans-item" style="border-top: 1px solid rgba(255,255,255,0.03); padding-top: 1.5rem;">
+                                <span class="trans-lang-label" style="color: var(--accent-gold);">
+                                    <i class="fas fa-globe"></i> English Translation
+                                </span>
+                                <div class="trans-text-main" style="font-size: 1.1rem; color: #b0b0b5; margin-top: 0.5rem; text-align: left; line-height: 1.8;">${engFull}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
