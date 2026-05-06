@@ -769,8 +769,8 @@ window.loadQuranContent = async function (id, type, surahName = '', jumpToAyah =
         const apiPath = type === 'juz' ? `by_juz/${id}` : `by_chapter/${id}`;
         
         const [wbwResUr, wbwResEn] = await Promise.all([
-            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97,131&word_fields=text_uthmani,translation,transliteration,root_text&per_page=50`),
-            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=en&word_fields=translation&per_page=50`)
+            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=ur&translations=97&word_fields=text_uthmani,translation,transliteration,root_text&per_page=50`),
+            fetch(`https://api.quran.com/api/v4/verses/${apiPath}?words=true&language=en&translations=131&word_fields=translation&per_page=50`)
         ]);
         
         const wbwDataUr = await wbwResUr.json();
@@ -781,12 +781,13 @@ window.loadQuranContent = async function (id, type, surahName = '', jumpToAyah =
             const ayahsEn = wbwDataEn.verses;
 
             content.innerHTML = `<div class="quran-reader-container">` + ayahs.map((ayah, i) => {
+                const ayEn = ayahsEn[i];
                 // Combine word uthmani texts to get the full verse text
                 const fullArabicVerse = ayah.words.filter(w => w.char_type_name === 'word').map(w => w.text_uthmani).join(' ') + ' ' + (ayah.words.find(w => w.char_type_name === 'end') ? ayah.words.find(w => w.char_type_name === 'end').text_uthmani : '');
                 
                 // Extract Full Translations
-                const urduFull = ayah.translations.find(t => t.resource_id === 97)?.text || '';
-                const engFull = ayah.translations.find(t => t.resource_id === 131)?.text || '';
+                const urduFull = (ayah.translations && ayah.translations.length > 0) ? ayah.translations[0].text : '';
+                const engFull = (ayEn && ayEn.translations && ayEn.translations.length > 0) ? ayEn.translations[0].text : '';
 
                 return `
                 <div class="reader-ayat-card reveal-ayat" id="ayah-${ayah.verse_key}" data-verse-key="${ayah.verse_key}" style="animation-delay: ${i * 0.1}s; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
