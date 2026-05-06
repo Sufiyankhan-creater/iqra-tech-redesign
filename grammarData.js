@@ -4,7 +4,8 @@ const grammarData = {
         items: [
             {
                 word: { "arabic": "مِنْ", "urdu": "سے", "english": "From", "ayah": 6236 },
-                example: { "arabic": "مِنَ النَّاسِ", "urdu": "لوگوں میں سے", "english": "From among the people", "ayah": 6236 }
+                example: { "arabic": "مِنَ النَّاسِ", "urdu": "لوگوں میں سے", "english": "From among the people", "ayah": 6236 },
+                root: "ن و س"
             },
             {
                 word: { "arabic": "إِلَى", "urdu": "طرف", "english": "To", "ayah": 6114 },
@@ -12,7 +13,8 @@ const grammarData = {
             },
             {
                 word: { "arabic": "عَلَى", "urdu": "اوپر", "english": "On", "ayah": 7 },
-                example: { "arabic": "عَلَى الْعَرْشِ", "urdu": "عرش پر", "english": "On the Throne", "ayah": 2353 }
+                example: { "arabic": "عَلَى الْعَرْشِ", "urdu": "عرش پر", "english": "On the Throne", "ayah": 2353 },
+                root: "ع ل و"
             },
             {
                 word: { "arabic": "فِي", "urdu": "میں", "english": "In", "ayah": 9 },
@@ -68,7 +70,8 @@ const grammarData = {
         items: [
             {
                 word: { "arabic": "هُ", "urdu": "اس کا", "english": "his / him", "ayah": 6222 },
-                example: { "arabic": "كِتَابُهُ", "urdu": "اس کی کتاب", "english": "His book", "ayah": 9 }
+                example: { "arabic": "كِتَابُهُ", "urdu": "اس کی کتاب", "english": "His book", "ayah": 9 },
+                root: "و ج ه"
             },
             {
                 word: { "arabic": "هُمَا", "urdu": "ان دونوں کا", "english": "their (dual)", "ayah": 2 },

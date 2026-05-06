@@ -799,7 +799,30 @@ window.loadQuranContent = async function (id, type, surahName = '', jumpToAyah =
                             const transUrText = w.translation ? w.translation.text : '';
                             const transEnText = (wEn && wEn.translation && wEn.translation.text) ? wEn.translation.text : '';
                             const translitText = (w.transliteration && w.transliteration.text) ? w.transliteration.text : '';
-                            const rootText = w.root_text || '';
+                            // Linguistic Audit Overrides for missing API roots
+                            const rootOverrideMap = {
+                                'ٱللَّهِ': 'أ ل ه',
+                                'ٱللَّهَ': 'أ ل ه',
+                                'ٱللَّهُ': 'أ ل ه',
+                                'ٱلنَّاسِ': 'ن و س',
+                                'ٱلنَّاسُ': 'ن و س',
+                                'سُفَهَآءُ': 'س ف ه',
+                                'ٱلسُّفَهَآءُ': 'س ف ه',
+                                'آمَنُوا': 'أ م ن',
+                                'يَعْلَمُونَ': 'ع ل م',
+                                'قَالُوا': 'ق و ل',
+                                'ٱلرَّحْمَـٰنِ': 'ر ح م',
+                                'ٱلرَّحِيمِ': 'ر ح م',
+                                'ٱلْحَمْدُ': 'ح م د',
+                                'بِسْمِ': 'س م و'
+                            };
+
+                            let rootText = w.root_text || '';
+                            if (!rootText || rootText === '---') {
+                                // Try exact match or normalized match
+                                const cleanArabic = arabicText.replace(/[ۖ-۩]/g, '').trim();
+                                rootText = rootOverrideMap[cleanArabic] || rootText;
+                            }
                             
                             const arabic = arabicText.replace(/'/g, "\\'");
                             const transUr = transUrText.replace(/'/g, "\\'");
