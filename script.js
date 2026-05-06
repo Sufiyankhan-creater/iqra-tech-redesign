@@ -272,11 +272,8 @@ function renderAcademy() {
                     </div>
                 </div>
                 ${item.root ? `
-                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <span style="font-size: 0.7rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 1px;">ROOT: ${item.root}</span>
-                        <button class="btn btn-teal" style="font-size: 0.6rem; padding: 0.4rem 0.8rem; border-radius: 6px; background: rgba(0,168,132,0.1); border: 1px solid var(--accent-teal);" onclick="window.open('https://corpus.quran.com/search.jsp?q=${item.root.replace(/ /g, '')}', '_blank')">
-                            <i class="fas fa-book-open"></i> Root Audit
-                        </button>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1); text-align: center; width: 100%;">
+                        <span style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 2px;">ROOT: ${item.root}</span>
                     </div>
                 ` : ''}
             </div>`).join('');
@@ -726,18 +723,6 @@ window.openGrammarModal = function(arabic, translit, translationEn, translationU
     const types = ["Noun (Ism)", "Verb (Fi'l)", "Particle (Harf)"];
     document.getElementById('grammar-syntax').textContent = ismType || types[Math.floor(Math.random() * types.length)];
     
-    // Search link to Corpus Quran for authoritative linguistic analysis
-    const searchBtn = document.getElementById('grammar-search-btn');
-    if (searchBtn) {
-        searchBtn.onclick = () => {
-            if (verseKey && wordPos) {
-                window.open(`https://corpus.quran.com/wordmorphology.jsp?location=(${verseKey}:${wordPos})`, '_blank');
-            } else {
-                window.open(`https://corpus.quran.com/search.jsp?q=${arabic}`, '_blank');
-            }
-        };
-    }
-
     document.getElementById('grammar-modal').style.display = 'flex';
 }
 
