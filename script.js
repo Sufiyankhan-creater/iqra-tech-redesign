@@ -653,22 +653,32 @@ function initQuranExplorer() {
     const gridParah = document.getElementById('juz-selection-grid');
     const gridSurah = document.getElementById('surah-selection-grid');
 
-    if(tabParah && tabSurah && gridParah && gridSurah) {
-        // Generate Parah Grid
-        for(let i=1; i<=30; i++) {
-            const card = document.createElement('div');
-            card.className = 'word-card glass-card juz-card';
-            card.style.cursor = 'pointer';
-            card.setAttribute('data-juz', i);
-            card.innerHTML = `
-                <div style="font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 1rem; letter-spacing: 2px;">JUZ 0${i.toString().padStart(2, '0').slice(-2)}</div>
-                <div class="word-arabic" style="font-size: 2.5rem;">الجزء ${i}</div>
-                <div style="color: #fff; font-weight: 600; font-size: 1.1rem; margin-top: 1rem;">Para ${i}</div>
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">Read with Word-by-Word Breakdown</p>
-            `;
-            card.onclick = () => window.promptLanguageSelection(i, 'juz');
-            gridParah.appendChild(card);
-        }
+   if(tabParah && tabSurah && gridParah && gridSurah) {
+    // Generate Parah Grid
+    const parahNames = [
+      'الٓمٓ', 'سَيَقُولُ', 'تِلْكَ الرُّسُلُ', 'لَنْ تَنَالُوا', 'وَالْمُحْصَنَاتُ',
+      'لَا يُحِبُّ اللَّهُ', 'وَإِذَا سَمِعُوا', 'وَلَوْ أَنَّنَا', 'قَالَ الْمَلَأُ', 'وَاعْلَمُوا',
+      'يَعْتَذِرُونَ', 'وَمَا مِنْ دَابَّةٍ', 'وَمَا أُبَرِّئُ', 'رُبَمَا', 'سُبْحَانَ الَّذِي',
+      'قَالَ أَلَمْ', 'اقْتَرَبَ', 'قَدْ أَفْلَحَ', 'وَقَالَ الَّذِينَ', 'أَمَّنْ خَلَقَ',
+      'اتْلُ مَا أُوحِيَ', 'وَمَنْ يَقْنُتْ', 'وَمَا لِيَ', 'فَمَنْ أَظْلَمُ', 'إِلَيْهِ يُرَدُّ',
+      'حم', 'قَالَ فَمَا خَطْبُكُمْ', 'قَدْ سَمِعَ اللَّهُ', 'تَبَارَكَ الَّذِي', 'عَمَّ يَتَسَاءَلُونَ'
+    ];
+    
+    for(let i=1; i<=30; i++) {
+        const card = document.createElement('div');
+        card.className = 'word-card glass-card juz-card';
+        card.style.cursor = 'pointer';
+        card.setAttribute('data-juz', i);
+        card.innerHTML = `
+            <div style="font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 1rem; letter-spacing: 2px;">JUZ ${i.toString().padStart(2, '0')}</div>
+            <div class="word-arabic" style="font-size: 2.2rem; line-height: 1.3; font-family: 'Amiri', serif;">${parahNames[i-1]}</div>
+            <div style="color: #fff; font-weight: 600; font-size: 1rem; margin-top: 1rem;">Para ${i}</div>
+            <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">Read with Word-by-Word</p>
+        `;
+        card.onclick = () => window.promptLanguageSelection(i, 'juz');
+        gridParah.appendChild(card);
+    }
+}
 
         // Fetch and Generate Surah Grid
         fetch('https://api.alquran.cloud/v1/surah')
@@ -741,6 +751,7 @@ window.loadQuranContent = async function (id, type, surahName = '', jumpToAyah =
     saveLastRead(id, type, surahName);
 
     overlay.style.display = 'block';
+    
     document.body.style.overflow = 'hidden';
     
     if(type === 'juz') label.textContent = `PARA ${id.toString().padStart(2, '0')}`;
