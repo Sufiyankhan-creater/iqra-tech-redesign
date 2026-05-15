@@ -72,8 +72,8 @@
             </div>
 
             <div class="tab-toggle-container glass-card" style="display: flex; background: rgba(5,5,10,0.6); padding: 0.5rem; border-radius: 50px;">
-                <button id="tab-parah" class="btn active-tab" style="padding: 0.8rem 2rem; border-radius: 50px; border: none; background: var(--accent-gold); color: #000; font-weight: 600; cursor: pointer; transition: 0.3s;">By Parah</button>
-                <button id="tab-surah" class="btn" style="padding: 0.8rem 2rem; border-radius: 50px; border: none; background: transparent; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s;">By Surah</button>
+                 <button id="tab-parah" class="quran-tab-btn active">By Parah</button>
+                 <button id="tab-surah" class="quran-tab-btn">By Surah</button>
             </div>
         </div>
     </section>
@@ -114,10 +114,10 @@
         
         <div class="container" id="reader-content" style="padding-top: 4rem; padding-bottom: 5rem;">
             <!-- Dynamic Ayats load here -->
-            <div id="reader-loading" style="text-align: center; padding: 5rem 0;">
-                <div class="loader-bar" style="margin: 0 auto 1.5rem;"><div class="loader-progress"></div></div>
-                <p style="color: var(--text-muted);">Syncing with Divine Source...</p>
-            </div>
+              <div id="reader-current-name" style="display: flex; align-items: center; gap: 0.8rem; margin-top: 0.8rem; color: var(--accent-gold); font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid rgba(240, 189, 90, 0.1); padding-top: 0.8rem;">
+                        <i class="fas fa-book-quran" style="font-size: 0.9rem;"></i>
+                        <span id="current-parah-surah-name">Loading...</span>
+                    </div>
         </div>
     </div>
 
