@@ -1867,3 +1867,19 @@ footer {
     from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
 }
+.quran-tab-btn {
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 0.9rem;
+}
+.quran-tab-btn.active {
+  background: var(--accent-gold);
+  color: #000;
+  border-color: var(--accent-gold);
+}
