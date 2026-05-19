@@ -20,8 +20,13 @@ try {
             if ($requestLine) {
                 $parts = $requestLine.Split(' ')
                 $path = $parts[1]
+                $path = $path.Split('?')[0]
                 if ($path -eq "/") { $path = "/index.html" }
                 $filePath = Join-Path (Get-Location) $path.TrimStart('/')
+
+                if (-not (Test-Path $filePath -PathType Leaf) -and (Test-Path "$filePath.html" -PathType Leaf)) {
+                    $filePath = "$filePath.html"
+                }
 
                 if (Test-Path $filePath -PathType Leaf) {
                     $content = [System.IO.File]::ReadAllBytes($filePath)

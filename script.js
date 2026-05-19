@@ -230,19 +230,40 @@ function initAcademy() {
 }
 
 function renderAcademy() {
-    const grid = document.getElementById('academy-dynamic-grid');
-    const examplesGrid = document.getElementById('academy-examples-grid');
-    const quizContainer = document.getElementById('academy-quiz-container');
-    const data = grammarData[academyState.category];
-    const info = categoryInfo[academyState.category];
+    try {
+        const grid = document.getElementById('academy-dynamic-grid');
+        const examplesGrid = document.getElementById('academy-examples-grid');
+        const quizContainer = document.getElementById('academy-quiz-container');
+        
+        if (typeof grammarData === 'undefined') {
+            throw new Error("grammarData is not defined. The grammarData.js file may have failed to load or parse.");
+        }
+        
+        const data = grammarData[academyState.category];
+        if (!data) {
+            throw new Error(`No grammar data found for category: ${academyState.category}`);
+        }
+        
+        const info = categoryInfo[academyState.category];
+        if (!info) {
+            throw new Error(`No category info found for category: ${academyState.category}`);
+        }
 
-    const badge = document.getElementById('academy-step-badge');
-    if (academyState.step === 1) badge.innerHTML = `<i class="fas fa-bolt"></i> ${info.step1}`;
-    else badge.innerHTML = `<i class="fas fa-certificate"></i> ${info.step2}`;
+        const badge = document.getElementById('academy-step-badge');
+        if (badge) {
+            if (academyState.step === 1) badge.innerHTML = `<i class="fas fa-bolt"></i> ${info.step1}`;
+            else badge.innerHTML = `<i class="fas fa-certificate"></i> ${info.step2}`;
+        }
 
-    document.getElementById('academy-title').textContent = info.title;
-    document.getElementById('academy-desc').textContent = info.desc;
-    document.getElementById('academy-rule-text').textContent = data.rule;
+        const titleEl = document.getElementById('academy-title');
+        if (titleEl) titleEl.textContent = info.title;
+        
+        const descEl = document.getElementById('academy-desc');
+        if (descEl) descEl.textContent = info.desc;
+        
+        const ruleEl = document.getElementById('academy-rule-text');
+        if (ruleEl) ruleEl.textContent = data.rule;
+
 
     if (academyState.step === 1) {
         grid.style.display = 'grid'; examplesGrid.style.display = 'none'; quizContainer.style.display = 'none';
@@ -284,6 +305,13 @@ function renderAcademy() {
         document.getElementById('academy-next-btn').textContent = isLastQuest ? 'Finish Mastery' : 'Next Question';
         document.getElementById('academy-prev-btn').style.display = 'inline-block';
         renderQuiz();
+    }
+    } catch (e) {
+        console.error("Error in renderAcademy:", e);
+        const ruleEl = document.getElementById('academy-rule-text');
+        if (ruleEl) {
+            ruleEl.innerHTML = `<span style="color: red;">Error: ${e.message}</span>`;
+        }
     }
 }
 
